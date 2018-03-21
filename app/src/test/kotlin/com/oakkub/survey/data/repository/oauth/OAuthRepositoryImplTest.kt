@@ -1,10 +1,14 @@
 package com.oakkub.survey.data.repository.oauth
 
+import com.oakkub.survey.data.response.OAuthResponse
 import com.oakkub.survey.data.services.OAuthService
+import com.oakkub.survey.exceptions.SurveysUnauthorizedException
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
 /**
@@ -15,9 +19,9 @@ import org.mockito.junit.MockitoJUnitRunner
 class OAuthRepositoryImplTest {
 
     @Mock
-    lateinit var oAuthService: OAuthService
+    private lateinit var oAuthService: OAuthService
 
-    lateinit var oAuthRepository: OAuthRepository
+    private lateinit var oAuthRepository: OAuthRepository
 
     @Before
     fun setup() {
@@ -26,7 +30,44 @@ class OAuthRepositoryImplTest {
 
     @Test
     fun `call authenticate should be ok`() {
-        
+        val request = OAuthRequest(
+                grantType = "Duh",
+                username = "Foo",
+                password = "Bar"
+        )
+        val response = OAuthResponse(
+                accessToken = "Yes",
+                tokenType = "Test",
+                expiresIn = 0,
+                createdAt = 0
+        )
+
+        Mockito.`when`(oAuthService.authenticate(request))
+                .thenReturn(Single.just(response))
+
+        oAuthRepository.authenticate(request).test()
+                .assertNoErrors()
+                .assertValue(response)
+
+        Mockito.verify(oAuthService, Mockito.times(1)).authenticate(request)
+
+    }
+
+    @Test
+    fun `call authenticate with wrong oauth info should failed`() {
+        val request = OAuthRequest(
+                grantType = "Wrong",
+                username = "Wrong",
+                password = "All Wrong"
+        )
+
+        Mockito.`when`(oAuthService.authenticate(request))
+                .thenReturn(Single.error(SurveysUnauthorizedException()))
+
+        oAuthRepository.authenticate(request).test()
+                .assertError(SurveysUnauthorizedException::class.java)
+
+        Mockito.verify(oAuthService, Mockito.times(1)).authenticate(request)
     }
 
 }
