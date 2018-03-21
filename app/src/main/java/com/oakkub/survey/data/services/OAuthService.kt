@@ -1,7 +1,10 @@
 package com.oakkub.survey.data.services
 
 import com.oakkub.survey.constants.Endpoints
+import com.oakkub.survey.data.repository.oauth.OAuthRequest
+import com.oakkub.survey.data.response.OAuthResponse
 import io.reactivex.Observable
+import retrofit2.http.Body
 import retrofit2.http.POST
 
 /**
@@ -10,6 +13,6 @@ import retrofit2.http.POST
 interface OAuthService {
 
     @POST(Endpoints.OAUTH)
-    fun authenticate(): Observable<OAuthService>
+    fun authenticate(@Body request: OAuthRequest): Observable<OAuthResponse>
 
 }
