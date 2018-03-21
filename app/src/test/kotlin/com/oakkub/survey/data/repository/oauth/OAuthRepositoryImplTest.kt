@@ -4,12 +4,15 @@ import com.oakkub.survey.data.response.OAuthResponse
 import com.oakkub.survey.data.services.OAuthService
 import com.oakkub.survey.exceptions.SurveysUnauthorizedException
 import io.reactivex.Single
+import okhttp3.ResponseBody
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
+import retrofit2.HttpException
+import retrofit2.Response
 
 /**
  * Created by oakkub on 22/3/2018 AD.
@@ -61,8 +64,11 @@ class OAuthRepositoryImplTest {
                 password = "All Wrong"
         )
 
+        val errorResponseBody = ResponseBody.create(null, "")
+        val errorResponse = Response.error<OAuthResponse>(401, errorResponseBody)
+
         Mockito.`when`(oAuthService.authenticate(request))
-                .thenReturn(Single.error(SurveysUnauthorizedException()))
+                .thenReturn(Single.error(HttpException(errorResponse)))
 
         oAuthRepository.authenticate(request).test()
                 .assertError(SurveysUnauthorizedException::class.java)
