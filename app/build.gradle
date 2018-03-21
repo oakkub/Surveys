@@ -32,6 +32,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -39,12 +43,13 @@ dependencies {
             fileTree(dir: 'libs', include: ['*.jar']),
             "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
 
+            "com.android.support:support-v4:$support_version",
             "com.android.support:design:$support_version",
             "com.android.support:recyclerview-v7:$support_version",
             "com.android.support.constraint:constraint-layout:$constraint_layout",
 
             "com.squareup.retrofit2:retrofit:$retrofit_version",
-            "com.squareup.retrofit2:converter-moshi:$retrofit_version",
+            "com.squareup.retrofit2:converter-gson:$retrofit_version",
             "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version",
 
             "com.squareup.okhttp3:okhttp:$okhttp_version",
@@ -56,13 +61,16 @@ dependencies {
             "android.arch.lifecycle:extensions:$arch_component_version",
             "android.arch.lifecycle:common-java8:$arch_component_version",
 
+            "com.github.bumptech.glide:glide:$glide_version",
+
             "com.google.dagger:dagger:$dagger_version",
+            "com.google.dagger:dagger-android-support:$dagger_version"
     )
 
     kapt(
-            "android.arch.lifecycle:compiler:$arch_component_version",
             "com.github.bumptech.glide:compiler:$glide_version",
-            "com.google.dagger:dagger-compiler:$dagger_version"
+            "com.google.dagger:dagger-compiler:$dagger_version",
+            "com.google.dagger:dagger-android-processor:$dagger_version"
     )
 
     testImplementation(
