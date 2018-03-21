@@ -27,8 +27,9 @@ class NetworkModule {
             .build()
 
     @Provides
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
             .baseUrl(Endpoints.BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
