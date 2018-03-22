@@ -1,6 +1,6 @@
 package com.oakkub.survey.data.services
 
-import com.oakkub.survey.constants.Endpoints
+import com.oakkub.survey.common.constants.Endpoints
 import com.oakkub.survey.data.repository.oauth.OAuthRequest
 import com.oakkub.survey.data.response.OAuthResponse
 import io.reactivex.Single

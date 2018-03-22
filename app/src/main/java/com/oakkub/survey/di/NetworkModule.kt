@@ -1,7 +1,7 @@
 package com.oakkub.survey.di
 
 import com.oakkub.survey.BuildConfig
-import com.oakkub.survey.constants.Endpoints
+import com.oakkub.survey.common.constants.Endpoints
 import com.oakkub.survey.data.services.OAuthService
 import dagger.Module
 import dagger.Provides
