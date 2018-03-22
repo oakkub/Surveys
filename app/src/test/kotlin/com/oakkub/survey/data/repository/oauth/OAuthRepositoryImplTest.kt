@@ -52,12 +52,12 @@ class OAuthRepositoryImplTest {
                 .assertNoErrors()
                 .assertValue(response)
 
-        Mockito.verify(oAuthService, Mockito.times(1)).authenticate(request)
+        Mockito.verify(oAuthService).authenticate(request)
 
     }
 
     @Test
-    fun `call authenticate with wrong oauth info should failed`() {
+    fun `call authenticate with wrong oauth info should failed with SurveyUnauthorizedException`() {
         val request = OAuthRequest(
                 grantType = "Wrong",
                 username = "Wrong",
@@ -73,7 +73,7 @@ class OAuthRepositoryImplTest {
         oAuthRepository.authenticate(request).test()
                 .assertError(SurveysUnauthorizedException::class.java)
 
-        Mockito.verify(oAuthService, Mockito.times(1)).authenticate(request)
+        Mockito.verify(oAuthService).authenticate(request)
     }
 
 }
