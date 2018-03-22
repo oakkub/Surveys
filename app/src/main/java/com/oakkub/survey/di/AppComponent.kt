@@ -12,7 +12,7 @@ import dagger.Component
         modules = [
             AppModule::class,
             NetworkModule::class,
-            ActivityBinder::class
+            ActivityBinderModule::class
         ]
 )
 interface AppComponent {
