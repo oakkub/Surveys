@@ -1,6 +1,7 @@
 package com.oakkub.survey.di
 
 import android.content.SharedPreferences
+import com.oakkub.survey.common.date.TimestampGetter
 import com.oakkub.survey.data.local.oauth.OAuthLocalDataSource
 import com.oakkub.survey.data.local.oauth.OAuthLocalDataSourceImpl
 import dagger.Module
@@ -13,8 +14,8 @@ import dagger.Provides
 class LocalModule {
 
     @Provides
-    fun provideOAuthLocalDataSource(sharedPreferences: SharedPreferences): OAuthLocalDataSource {
-        return OAuthLocalDataSourceImpl(sharedPreferences)
+    fun provideOAuthLocalDataSource(sharedPreferences: SharedPreferences, timestampGetter: TimestampGetter): OAuthLocalDataSource {
+        return OAuthLocalDataSourceImpl(sharedPreferences, timestampGetter)
     }
 
 }

@@ -1,8 +1,11 @@
 package com.oakkub.survey.data.local.oauth
 
+import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.oakkub.survey.common.date.TimestampGetterImplForTest
 import com.oakkub.survey.data.response.OAuthResponse
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,17 +19,17 @@ import org.robolectric.RuntimeEnvironment
 @RunWith(RobolectricTestRunner::class)
 class OAuthLocalDataSourceImplTest {
 
-    lateinit var oAuthLocalDataSource: OAuthLocalDataSource
+    private lateinit var prefs: SharedPreferences
 
     @Before
     fun setUp() {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
-        oAuthLocalDataSource = OAuthLocalDataSourceImpl(prefs)
+        prefs = PreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application)
     }
 
     @Test
-    fun `should save oAuthResponse into local storage correctly`() {
-        val response = OAuthResponse("123456789", "ok", 1000L, 2000L)
+    fun `should save oAuthResponse into local storage and retrieve it correctly`() {
+        val oAuthLocalDataSource = OAuthLocalDataSourceImpl(prefs, TimestampGetterImplForTest(3000L))
+        val response = OAuthResponse("123456789", "ok", 1000L, 2500L)
         oAuthLocalDataSource.save(response)
 
         assertEquals(oAuthLocalDataSource.get(), response)
@@ -34,7 +37,18 @@ class OAuthLocalDataSourceImplTest {
 
     @Test
     fun `get oAuthResponse from local storage without saving it should be null`() {
+        val oAuthLocalDataSource = OAuthLocalDataSourceImpl(prefs, TimestampGetterImplForTest(3000L))
         assertEquals(oAuthLocalDataSource.get(), null)
+    }
+
+    @Test
+    fun `get oAuthResponse from local storage with stale timestamp should be null`() {
+        val timestampGetter = TimestampGetterImplForTest(3000L)
+        val oAuthLocalDataSource = OAuthLocalDataSourceImpl(prefs, timestampGetter)
+        val response = OAuthResponse("123456789", "foo", 1000L, 1000L)
+        oAuthLocalDataSource.save(response)
+
+        assertNull(oAuthLocalDataSource.get())
     }
 
 }

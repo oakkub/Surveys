@@ -2,13 +2,15 @@ package com.oakkub.survey.data.local.oauth
 
 import android.content.SharedPreferences
 import androidx.content.edit
+import com.oakkub.survey.common.date.TimestampGetter
 import com.oakkub.survey.data.response.OAuthResponse
 import javax.inject.Inject
 
 /**
  * Created by oakkub on 23/3/2018 AD.
  */
-class OAuthLocalDataSourceImpl @Inject constructor(val sharedPreferences: SharedPreferences) : OAuthLocalDataSource {
+class OAuthLocalDataSourceImpl @Inject constructor(private val sharedPreferences: SharedPreferences,
+                                                   private val timestampGetter: TimestampGetter) : OAuthLocalDataSource {
 
     override fun save(oAuthResponse: OAuthResponse) {
         sharedPreferences.edit {
@@ -25,11 +27,16 @@ class OAuthLocalDataSourceImpl @Inject constructor(val sharedPreferences: Shared
         val expiresIn = getLong(PREF_KEY_O_AUTH_REPO_EXPIRES_IN, -1)
         val createdAt = getLong(PREF_KEY_O_AUTH_REPO_CREATED_AT, -1)
 
-        return if (accessToken == "" && tokenType == "" && expiresIn == -1L && createdAt == -1L) {
-            null
-        } else {
-            OAuthResponse(accessToken, tokenType, expiresIn, createdAt)
+        if (accessToken == "" && tokenType == "" && expiresIn == -1L && createdAt == -1L) {
+            return@with null
         }
+
+        val staleData = timestampGetter.getCurrentTimestamp() - createdAt > expiresIn
+        if (staleData) {
+            return@with null
+        }
+
+        OAuthResponse(accessToken, tokenType, expiresIn, createdAt)
     }
 
 }
