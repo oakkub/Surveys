@@ -1,5 +1,6 @@
 package com.oakkub.survey.data.repository.oauth
 
+import com.oakkub.survey.data.local.oauth.OAuthLocalDataSource
 import com.oakkub.survey.data.response.OAuthResponse
 import com.oakkub.survey.data.services.OAuthService
 import com.oakkub.survey.exceptions.SurveysUnauthorizedException
@@ -24,11 +25,14 @@ class OAuthRepositoryImplTest {
     @Mock
     private lateinit var oAuthService: OAuthService
 
+    @Mock
+    private lateinit var oAuthLocalDataSource: OAuthLocalDataSource
+
     private lateinit var oAuthRepository: OAuthRepository
 
     @Before
     fun setup() {
-        oAuthRepository = OAuthRepositoryImpl(oAuthService)
+        oAuthRepository = OAuthRepositoryImpl(oAuthService, oAuthLocalDataSource)
     }
 
     @Test
