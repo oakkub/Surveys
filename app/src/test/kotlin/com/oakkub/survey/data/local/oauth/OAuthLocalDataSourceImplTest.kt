@@ -11,12 +11,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 
 /**
  * Created by oakkub on 23/3/2018 AD.
  */
 @Suppress("IllegalIdentifier")
 @RunWith(RobolectricTestRunner::class)
+@Config(manifest=Config.NONE)
 class OAuthLocalDataSourceImplTest {
 
     private lateinit var prefs: SharedPreferences
