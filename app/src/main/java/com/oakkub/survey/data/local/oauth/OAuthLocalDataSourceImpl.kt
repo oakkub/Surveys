@@ -31,8 +31,8 @@ class OAuthLocalDataSourceImpl @Inject constructor(private val sharedPreferences
             return@with null
         }
 
-        val staleData = timestampGetter.getCurrentTimestamp() - createdAt > expiresIn
-        if (staleData) {
+        val isExpired = timestampGetter.getCurrentTimestamp() - createdAt > expiresIn
+        if (isExpired) {
             return@with null
         }
 
