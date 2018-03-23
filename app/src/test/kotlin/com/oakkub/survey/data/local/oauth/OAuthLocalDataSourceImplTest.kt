@@ -4,8 +4,6 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.oakkub.survey.common.date.TimestampGetterImplForTest
 import com.oakkub.survey.data.response.OAuthResponse
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,25 +30,37 @@ class OAuthLocalDataSourceImplTest {
     fun `should save oAuthResponse into local storage and retrieve it correctly`() {
         val oAuthLocalDataSource = OAuthLocalDataSourceImpl(prefs, TimestampGetterImplForTest(3000L))
         val response = OAuthResponse("123456789", "ok", 1000L, 2500L)
+
         oAuthLocalDataSource.save(response)
+                .test()
+                .assertComplete()
 
-        assertEquals(oAuthLocalDataSource.get(), response)
+        oAuthLocalDataSource.get()
+                .test()
+                .assertValue(response)
     }
 
     @Test
-    fun `get oAuthResponse from local storage without saving it should be null`() {
+    fun `get oAuthResponse from local storage without saving it should error`() {
         val oAuthLocalDataSource = OAuthLocalDataSourceImpl(prefs, TimestampGetterImplForTest(3000L))
-        assertEquals(oAuthLocalDataSource.get(), null)
+        oAuthLocalDataSource.get()
+                .test()
+                .assertError(NullPointerException::class.java)
     }
 
     @Test
-    fun `get oAuthResponse from local storage with stale timestamp should be null`() {
+    fun `get oAuthResponse from local storage with stale timestamp should error`() {
         val timestampGetter = TimestampGetterImplForTest(3000L)
         val oAuthLocalDataSource = OAuthLocalDataSourceImpl(prefs, timestampGetter)
         val response = OAuthResponse("123456789", "foo", 1000L, 1000L)
-        oAuthLocalDataSource.save(response)
 
-        assertNull(oAuthLocalDataSource.get())
+        oAuthLocalDataSource.save(response)
+                .test()
+                .assertComplete()
+
+        oAuthLocalDataSource.get()
+                .test()
+                .assertError(NullPointerException::class.java)
     }
 
 }

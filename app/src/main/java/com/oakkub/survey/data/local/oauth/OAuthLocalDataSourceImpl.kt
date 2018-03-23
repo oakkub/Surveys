@@ -4,6 +4,8 @@ import android.content.SharedPreferences
 import androidx.content.edit
 import com.oakkub.survey.common.date.TimestampGetter
 import com.oakkub.survey.data.response.OAuthResponse
+import io.reactivex.Completable
+import io.reactivex.Single
 import javax.inject.Inject
 
 /**
@@ -12,8 +14,8 @@ import javax.inject.Inject
 class OAuthLocalDataSourceImpl @Inject constructor(private val sharedPreferences: SharedPreferences,
                                                    private val timestampGetter: TimestampGetter) : OAuthLocalDataSource {
 
-    override fun save(oAuthResponse: OAuthResponse) {
-        sharedPreferences.edit {
+    override fun save(oAuthResponse: OAuthResponse): Completable = Completable.fromCallable {
+        sharedPreferences.edit(commit = true) {
             putString(PREF_KEY_O_AUTH_REPO_ACCESS_TOKEN, oAuthResponse.accessToken)
             putString(PREF_KEY_O_AUTH_REPO_TOKEN_TYPE, oAuthResponse.tokenType)
             putLong(PREF_KEY_O_AUTH_REPO_EXPIRES_IN, oAuthResponse.expiresIn)
@@ -21,22 +23,22 @@ class OAuthLocalDataSourceImpl @Inject constructor(private val sharedPreferences
         }
     }
 
-    override fun get(): OAuthResponse? = with(sharedPreferences) {
-        val accessToken = getString(PREF_KEY_O_AUTH_REPO_ACCESS_TOKEN, "")
-        val tokenType = getString(PREF_KEY_O_AUTH_REPO_TOKEN_TYPE, "")
-        val expiresIn = getLong(PREF_KEY_O_AUTH_REPO_EXPIRES_IN, -1)
-        val createdAt = getLong(PREF_KEY_O_AUTH_REPO_CREATED_AT, -1)
+    override fun get(): Single<OAuthResponse> = Single.create { emitter ->
+        val accessToken = sharedPreferences.getString(PREF_KEY_O_AUTH_REPO_ACCESS_TOKEN, "")
+        val tokenType = sharedPreferences.getString(PREF_KEY_O_AUTH_REPO_TOKEN_TYPE, "")
+        val expiresIn = sharedPreferences.getLong(PREF_KEY_O_AUTH_REPO_EXPIRES_IN, -1)
+        val createdAt = sharedPreferences.getLong(PREF_KEY_O_AUTH_REPO_CREATED_AT, -1)
 
         if (accessToken == "" && tokenType == "" && expiresIn == -1L && createdAt == -1L) {
-            return@with null
+            emitter.onError(NullPointerException())
         }
 
         val isExpired = timestampGetter.getCurrentTimestamp() - createdAt > expiresIn
         if (isExpired) {
-            return@with null
+            emitter.onError(NullPointerException())
         }
 
-        OAuthResponse(accessToken, tokenType, expiresIn, createdAt)
+        emitter.onSuccess(OAuthResponse(accessToken, tokenType, expiresIn, createdAt))
     }
 
 }
