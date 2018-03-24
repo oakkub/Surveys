@@ -7,7 +7,6 @@ import com.oakkub.survey.data.services.surveys.SurveyResponse
  */
 sealed class SurveysUiModel {
     object Loading: SurveysUiModel()
-    object Empty: SurveysUiModel()
     data class Error(val throwable: Throwable): SurveysUiModel()
-    data class Success(val surveys: List<SurveyResponse>): SurveysUiModel()
+    data class Success(val surveys: Set<SurveyResponse>, val isComplete: Boolean): SurveysUiModel()
 }
