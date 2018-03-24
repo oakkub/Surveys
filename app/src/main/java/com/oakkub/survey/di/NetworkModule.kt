@@ -3,6 +3,7 @@ package com.oakkub.survey.di
 import com.oakkub.survey.BuildConfig
 import com.oakkub.survey.common.constants.Endpoints
 import com.oakkub.survey.data.services.oauth.OAuthService
+import com.oakkub.survey.data.services.surveys.SurveysService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -36,5 +37,8 @@ class NetworkModule {
 
     @Provides
     fun provideOAuthService(retrofit: Retrofit): OAuthService = retrofit.create(OAuthService::class.java)
+
+    @Provides
+    fun provideSurveysService(retrofit: Retrofit): SurveysService = retrofit.create(SurveysService::class.java)
 
 }
