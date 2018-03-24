@@ -81,7 +81,8 @@ dependencies {
             "junit:junit:$junit_version",
             "org.mockito:mockito-core:$mockito_version",
             "com.squareup.okhttp3:mockwebserver:$okhttp_version",
-            "org.robolectric:robolectric:$robolectric_version"
+            "org.robolectric:robolectric:$robolectric_version",
+            "android.arch.core:core-testing:$arch_component_version"
     )
 
     androidTestImplementation(
