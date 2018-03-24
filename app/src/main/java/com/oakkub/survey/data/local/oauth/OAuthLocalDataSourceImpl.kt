@@ -3,7 +3,7 @@ package com.oakkub.survey.data.local.oauth
 import android.content.SharedPreferences
 import androidx.content.edit
 import com.oakkub.survey.common.date.TimestampGetter
-import com.oakkub.survey.data.response.OAuthResponse
+import com.oakkub.survey.data.services.oauth.OAuthResponse
 import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject

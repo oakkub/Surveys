@@ -3,7 +3,7 @@ package com.oakkub.survey.data.local.oauth
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.oakkub.survey.common.date.TimestampGetterImplForTest
-import com.oakkub.survey.data.response.OAuthResponse
+import com.oakkub.survey.data.services.oauth.OAuthResponse
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

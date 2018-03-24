@@ -2,8 +2,8 @@ package com.oakkub.survey.data.repository.oauth
 
 import com.oakkub.survey.data.local.oauth.OAuthLocalDataSource
 import com.oakkub.survey.data.local.oauth.OAuthLocalResponse
-import com.oakkub.survey.data.response.OAuthResponse
-import com.oakkub.survey.data.services.OAuthService
+import com.oakkub.survey.data.services.oauth.OAuthResponse
+import com.oakkub.survey.data.services.oauth.OAuthService
 import com.oakkub.survey.exceptions.SurveysUnauthorizedException
 import io.reactivex.Single
 import retrofit2.HttpException

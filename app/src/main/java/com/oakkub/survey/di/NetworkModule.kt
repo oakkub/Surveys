@@ -2,7 +2,7 @@ package com.oakkub.survey.di
 
 import com.oakkub.survey.BuildConfig
 import com.oakkub.survey.common.constants.Endpoints
-import com.oakkub.survey.data.services.OAuthService
+import com.oakkub.survey.data.services.oauth.OAuthService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
