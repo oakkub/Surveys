@@ -24,7 +24,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
-                android:contentDescription="@string/surveys_content_desc_refresh" />
+                android:clickable="true"
+                android:contentDescription="@string/surveys_content_desc_refresh"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_refresh_white_24dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -43,7 +47,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/margin_padding_large"
-                android:contentDescription="@string/surveys_content_desc_menu" />
+                android:clickable="true"
+                android:contentDescription="@string/surveys_content_desc_menu"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_dehaze_white_24dp" />
 
         </android.support.v7.widget.Toolbar>
 
