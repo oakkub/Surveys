@@ -33,12 +33,14 @@ class OAuthLocalDataSourceImpl @Inject constructor(
 
         if (accessToken == "" && tokenType == "" && expiresIn == -1L && createdAt == -1L) {
             emitter.onSuccess(OAuthLocalResponse.Empty)
+            return@create
         }
 
         val isExpired = timestampGetter.getCurrentTimestamp() - createdAt > expiresIn
         if (isExpired) {
             remove(sharedPreferences)
             emitter.onSuccess(OAuthLocalResponse.Expired)
+            return@create
         }
 
         val oAuthResponse = OAuthResponse(accessToken, tokenType, expiresIn, createdAt)
