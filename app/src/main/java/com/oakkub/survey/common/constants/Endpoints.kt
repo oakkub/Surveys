@@ -1,4 +1,4 @@
-package com.oakkub.survey.constants
+package com.oakkub.survey.common.constants
 
 /**
  * Created by oakkub on 21/3/2018 AD.

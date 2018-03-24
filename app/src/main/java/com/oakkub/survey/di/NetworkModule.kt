@@ -1,7 +1,8 @@
 package com.oakkub.survey.di
 
 import com.oakkub.survey.BuildConfig
-import com.oakkub.survey.constants.Endpoints
+import com.oakkub.survey.common.constants.Endpoints
+import com.oakkub.survey.data.services.OAuthService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -26,11 +27,14 @@ class NetworkModule {
             .build()
 
     @Provides
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
             .baseUrl(Endpoints.BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
+    @Provides
+    fun provideOAuthService(retrofit: Retrofit): OAuthService = retrofit.create(OAuthService::class.java)
 
 }

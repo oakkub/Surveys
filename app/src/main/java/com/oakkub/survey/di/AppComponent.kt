@@ -10,8 +10,10 @@ import dagger.Component
  */
 @Component(
         modules = [
+            ActivityBinderModule::class,
             AppModule::class,
-            NetworkModule::class
+            NetworkModule::class,
+            LocalModule::class
         ]
 )
 interface AppComponent {
