@@ -4,6 +4,7 @@
     <!--SurveysActivity-->
     <string name="surveys_content_desc_refresh">Refresh</string>
     <string name="surveys_content_desc_menu">Menu</string>
+    <string name="surveys_toolbar_title">Surveys</string>
     <!--SurveysActivity-->
 
 </resources>
