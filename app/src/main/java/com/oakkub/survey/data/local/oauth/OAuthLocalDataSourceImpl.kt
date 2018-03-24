@@ -32,7 +32,6 @@ class OAuthLocalDataSourceImpl @Inject constructor(
         val createdAt = sharedPreferences.getLong(PREF_KEY_O_AUTH_REPO_CREATED_AT, -1)
 
         if (accessToken == "" && tokenType == "" && expiresIn == -1L && createdAt == -1L) {
-            remove(sharedPreferences)
             emitter.onSuccess(OAuthLocalResponse.Empty)
         }
 
