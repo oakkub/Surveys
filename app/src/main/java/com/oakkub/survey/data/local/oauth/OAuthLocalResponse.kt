@@ -1,6 +1,6 @@
 package com.oakkub.survey.data.local.oauth
 
-import com.oakkub.survey.data.response.OAuthResponse
+import com.oakkub.survey.data.services.oauth.OAuthResponse
 
 /**
  * Created by oakkub on 24/3/2018 AD.

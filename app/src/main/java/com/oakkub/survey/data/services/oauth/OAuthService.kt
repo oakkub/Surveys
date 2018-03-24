@@ -1,8 +1,8 @@
-package com.oakkub.survey.data.services
+package com.oakkub.survey.data.services.oauth
 
 import com.oakkub.survey.common.constants.Endpoints
 import com.oakkub.survey.data.repository.oauth.OAuthRequest
-import com.oakkub.survey.data.response.OAuthResponse
+import com.oakkub.survey.data.services.oauth.OAuthResponse
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.POST

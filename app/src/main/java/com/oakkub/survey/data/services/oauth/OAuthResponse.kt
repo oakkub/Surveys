@@ -1,4 +1,4 @@
-package com.oakkub.survey.data.response
+package com.oakkub.survey.data.services.oauth
 
 import com.google.gson.annotations.SerializedName
 
