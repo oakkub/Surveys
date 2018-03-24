@@ -5,6 +5,7 @@ import com.oakkub.survey.data.local.oauth.OAuthLocalResponse
 import com.oakkub.survey.data.services.oauth.OAuthResponse
 import com.oakkub.survey.data.services.oauth.OAuthService
 import com.oakkub.survey.exceptions.SurveysUnauthorizedException
+import com.oakkub.survey.ext.then
 import com.oakkub.survey.ext.whenever
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -48,20 +49,23 @@ class OAuthRepositoryImplTest {
     }
 
     @Test
-    fun  `call authenticate should get from network`() {
+    fun `call authenticate should get from network`() {
         val request = OAuthRequest(grantType = "Duh", username = "Foo", password = "Bar")
         val response = OAuthResponse(accessToken = "Yes", tokenType = "Test", expiresIn = 1000L, createdAt = 2500L)
 
         val oAuthRepository = OAuthRepositoryImpl(oAuthService, oAuthLocalDataSource)
 
-        whenever(oAuthLocalDataSource.get())
-                .thenReturn(Single.just(OAuthLocalResponse.Expired))
+        whenever(oAuthLocalDataSource.get()) then {
+            Single.just(OAuthLocalResponse.Expired)
+        }
 
-        whenever(oAuthService.authenticate(request))
-                .thenReturn(Single.just(response))
+        whenever(oAuthService.authenticate(request)) then {
+            Single.just(response)
+        }
 
-        whenever(oAuthLocalDataSource.save(response))
-                .thenReturn(Completable.complete())
+        whenever(oAuthLocalDataSource.save(response)) then {
+            Completable.complete()
+        }
 
         oAuthRepository.authenticate(request)
                 .test()
@@ -78,13 +82,15 @@ class OAuthRepositoryImplTest {
 
         val oAuthRepository = OAuthRepositoryImpl(oAuthService, oAuthLocalDataSource)
 
-        whenever(oAuthLocalDataSource.get())
-                .thenReturn(Single.just(OAuthLocalResponse.Empty))
+        whenever(oAuthLocalDataSource.get()) then {
+            Single.just(OAuthLocalResponse.Empty)
+        }
 
-        val errorResponseBody = ResponseBody.create(null, "")
-        val errorResponse = Response.error<OAuthResponse>(401, errorResponseBody)
-        whenever(oAuthService.authenticate(request))
-                .thenReturn(Single.error(HttpException(errorResponse)))
+        whenever(oAuthService.authenticate(request)) then {
+            val errorResponseBody = ResponseBody.create(null, "")
+            val errorResponse = Response.error<OAuthResponse>(401, errorResponseBody)
+            Single.error(HttpException(errorResponse))
+        }
 
         oAuthRepository.authenticate(request).test()
                 .assertError(SurveysUnauthorizedException::class.java)
