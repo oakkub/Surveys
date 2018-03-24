@@ -11,8 +11,10 @@ import javax.inject.Inject
 /**
  * Created by oakkub on 23/3/2018 AD.
  */
-class OAuthLocalDataSourceImpl @Inject constructor(private val sharedPreferences: SharedPreferences,
-                                                   private val timestampGetter: TimestampGetter) : OAuthLocalDataSource {
+class OAuthLocalDataSourceImpl @Inject constructor(
+        private val sharedPreferences: SharedPreferences,
+        private val timestampGetter: TimestampGetter
+) : OAuthLocalDataSource {
 
     override fun save(oAuthResponse: OAuthResponse): Completable = Completable.fromCallable {
         sharedPreferences.edit(commit = true) {
@@ -23,22 +25,34 @@ class OAuthLocalDataSourceImpl @Inject constructor(private val sharedPreferences
         }
     }
 
-    override fun get(): Single<OAuthResponse> = Single.create { emitter ->
+    override fun get(): Single<OAuthLocalResponse> = Single.create { emitter ->
         val accessToken = sharedPreferences.getString(PREF_KEY_O_AUTH_REPO_ACCESS_TOKEN, "")
         val tokenType = sharedPreferences.getString(PREF_KEY_O_AUTH_REPO_TOKEN_TYPE, "")
         val expiresIn = sharedPreferences.getLong(PREF_KEY_O_AUTH_REPO_EXPIRES_IN, -1)
         val createdAt = sharedPreferences.getLong(PREF_KEY_O_AUTH_REPO_CREATED_AT, -1)
 
         if (accessToken == "" && tokenType == "" && expiresIn == -1L && createdAt == -1L) {
-            emitter.onError(NullPointerException())
+            remove(sharedPreferences)
+            emitter.onSuccess(OAuthLocalResponse.Empty)
         }
 
         val isExpired = timestampGetter.getCurrentTimestamp() - createdAt > expiresIn
         if (isExpired) {
-            emitter.onError(NullPointerException())
+            remove(sharedPreferences)
+            emitter.onSuccess(OAuthLocalResponse.Expired)
         }
 
-        emitter.onSuccess(OAuthResponse(accessToken, tokenType, expiresIn, createdAt))
+        val oAuthResponse = OAuthResponse(accessToken, tokenType, expiresIn, createdAt)
+        emitter.onSuccess(OAuthLocalResponse.Success(oAuthResponse))
+    }
+
+    private fun remove(sharedPreferences: SharedPreferences) {
+        sharedPreferences.edit(commit = true) {
+            remove(PREF_KEY_O_AUTH_REPO_ACCESS_TOKEN)
+            remove(PREF_KEY_O_AUTH_REPO_TOKEN_TYPE)
+            remove(PREF_KEY_O_AUTH_REPO_EXPIRES_IN)
+            remove(PREF_KEY_O_AUTH_REPO_CREATED_AT)
+        }
     }
 
 }

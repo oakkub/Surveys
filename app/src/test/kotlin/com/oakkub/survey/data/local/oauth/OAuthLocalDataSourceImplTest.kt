@@ -37,19 +37,19 @@ class OAuthLocalDataSourceImplTest {
 
         oAuthLocalDataSource.get()
                 .test()
-                .assertValue(response)
+                .assertValue(OAuthLocalResponse.Success(response))
     }
 
     @Test
-    fun `get oAuthResponse from local storage without saving it should error`() {
+    fun `get oAuthResponse from local storage without saving it should return empty`() {
         val oAuthLocalDataSource = OAuthLocalDataSourceImpl(prefs, TimestampGetterImplForTest(3000L))
         oAuthLocalDataSource.get()
                 .test()
-                .assertError(NullPointerException::class.java)
+                .assertValue(OAuthLocalResponse.Empty)
     }
 
     @Test
-    fun `get oAuthResponse from local storage with stale timestamp should error`() {
+    fun `get oAuthResponse from local storage with stale timestamp should return expired`() {
         val timestampGetter = TimestampGetterImplForTest(3000L)
         val oAuthLocalDataSource = OAuthLocalDataSourceImpl(prefs, timestampGetter)
         val response = OAuthResponse("123456789", "foo", 1000L, 1000L)
@@ -60,7 +60,7 @@ class OAuthLocalDataSourceImplTest {
 
         oAuthLocalDataSource.get()
                 .test()
-                .assertError(NullPointerException::class.java)
+                .assertValue(OAuthLocalResponse.Expired)
     }
 
 }

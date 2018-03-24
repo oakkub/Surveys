@@ -1,6 +1,7 @@
 package com.oakkub.survey.data.repository.oauth
 
 import com.oakkub.survey.data.local.oauth.OAuthLocalDataSource
+import com.oakkub.survey.data.local.oauth.OAuthLocalResponse
 import com.oakkub.survey.data.response.OAuthResponse
 import com.oakkub.survey.data.services.OAuthService
 import com.oakkub.survey.exceptions.SurveysUnauthorizedException
@@ -17,12 +18,25 @@ class OAuthRepositoryImpl @Inject constructor(
 ) : OAuthRepository {
 
     override fun authenticate(request: OAuthRequest): Single<OAuthResponse> {
-        return oAuthService.authenticate(request)
-                .onErrorResumeNext {
-                    if (it is HttpException && it.code() == 401) {
+        val localOAuthSingle = oAuthLocalDataSource.get()
+        val remoteOAuthSingle = Single
+                .defer { oAuthService.authenticate(request) }
+                .flatMap { oAuthResponse ->
+                    oAuthLocalDataSource.save(oAuthResponse).toSingle { oAuthResponse }
+                }
+        return localOAuthSingle
+                .flatMap {
+                    when (it) {
+                        is OAuthLocalResponse.Expired,
+                        is OAuthLocalResponse.Empty -> remoteOAuthSingle
+                        is OAuthLocalResponse.Success -> Single.just(it.response)
+                    }
+                }
+                .onErrorResumeNext { throwable ->
+                    if (throwable is HttpException && throwable.code() == 401) {
                         Single.error(SurveysUnauthorizedException())
                     } else {
-                        Single.error(it)
+                        Single.error(throwable)
                     }
                 }
     }

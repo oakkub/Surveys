@@ -10,6 +10,6 @@ import io.reactivex.Single
 interface OAuthLocalDataSource {
 
     fun save(oAuthResponse: OAuthResponse): Completable
-    fun get(): Single<OAuthResponse>
+    fun get(): Single<OAuthLocalResponse>
 
 }
