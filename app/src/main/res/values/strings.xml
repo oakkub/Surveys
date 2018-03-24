@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Surveys</string>
+
+    <!--SurveysActivity-->
+    <string name="surveys_content_desc_refresh">Refresh</string>
+    <string name="surveys_content_desc_menu">Menu</string>
+    <!--SurveysActivity-->
+
 </resources>
