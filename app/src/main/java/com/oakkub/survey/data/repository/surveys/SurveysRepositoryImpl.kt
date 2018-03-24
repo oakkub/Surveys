@@ -9,7 +9,7 @@ import javax.inject.Inject
 /**
  * Created by oakkub on 24/3/2018 AD.
  */
-class SurveysRepositoryImpl @Inject constructor(val surveysService: SurveysService) : SurveysRepository {
+class SurveysRepositoryImpl @Inject constructor(private val surveysService: SurveysService) : SurveysRepository {
 
     override fun getSurveys(request: SurveyRequest): Single<List<SurveyResponse>> {
         return Single.just(listOf())
