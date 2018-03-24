@@ -1,6 +1,6 @@
 package com.oakkub.survey.di
 
-import com.oakkub.survey.MainActivity
+import com.oakkub.survey.ui.surveys.SurveysActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -11,6 +11,6 @@ import dagger.android.ContributesAndroidInjector
 abstract class ActivityBinderModule {
 
     @ContributesAndroidInjector()
-    abstract fun bindMainActivity(): MainActivity
+    abstract fun bindSurveysActivity(): SurveysActivity
 
 }
