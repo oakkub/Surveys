@@ -5,13 +5,13 @@ import com.oakkub.survey.data.local.oauth.OAuthLocalResponse
 import com.oakkub.survey.data.services.oauth.OAuthResponse
 import com.oakkub.survey.data.services.oauth.OAuthService
 import com.oakkub.survey.exceptions.SurveysUnauthorizedException
+import com.oakkub.survey.ext.whenever
 import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
@@ -38,7 +38,7 @@ class OAuthRepositoryImplTest {
 
         val oAuthRepository = OAuthRepositoryImpl(oAuthService, oAuthLocalDataSource)
 
-        Mockito.`when`(oAuthLocalDataSource.get())
+        whenever(oAuthLocalDataSource.get())
                 .thenReturn(Single.just(OAuthLocalResponse.Success(response)))
 
         oAuthRepository.authenticate(request).test()
@@ -54,13 +54,13 @@ class OAuthRepositoryImplTest {
 
         val oAuthRepository = OAuthRepositoryImpl(oAuthService, oAuthLocalDataSource)
 
-        Mockito.`when`(oAuthLocalDataSource.get())
+        whenever(oAuthLocalDataSource.get())
                 .thenReturn(Single.just(OAuthLocalResponse.Expired))
 
-        Mockito.`when`(oAuthService.authenticate(request))
+        whenever(oAuthService.authenticate(request))
                 .thenReturn(Single.just(response))
 
-        Mockito.`when`(oAuthLocalDataSource.save(response))
+        whenever(oAuthLocalDataSource.save(response))
                 .thenReturn(Completable.complete())
 
         oAuthRepository.authenticate(request)
@@ -78,12 +78,12 @@ class OAuthRepositoryImplTest {
 
         val oAuthRepository = OAuthRepositoryImpl(oAuthService, oAuthLocalDataSource)
 
-        Mockito.`when`(oAuthLocalDataSource.get())
+        whenever(oAuthLocalDataSource.get())
                 .thenReturn(Single.just(OAuthLocalResponse.Empty))
 
         val errorResponseBody = ResponseBody.create(null, "")
         val errorResponse = Response.error<OAuthResponse>(401, errorResponseBody)
-        Mockito.`when`(oAuthService.authenticate(request))
+        whenever(oAuthService.authenticate(request))
                 .thenReturn(Single.error(HttpException(errorResponse)))
 
         oAuthRepository.authenticate(request).test()
