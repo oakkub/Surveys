@@ -12,7 +12,7 @@ import javax.inject.Inject
 class SurveysRepositoryImpl @Inject constructor(private val surveysService: SurveysService) : SurveysRepository {
 
     override fun getSurveys(request: SurveyRequest): Single<List<SurveyResponse>> {
-        return Single.just(listOf())
+        return surveysService.getSurveys(request)
     }
 
 }
