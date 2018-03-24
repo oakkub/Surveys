@@ -13,7 +13,8 @@ import dagger.Component
             ActivityBinderModule::class,
             AppModule::class,
             NetworkModule::class,
-            LocalModule::class
+            LocalModule::class,
+            RepositoryModule::class
         ]
 )
 interface AppComponent {
