@@ -85,7 +85,7 @@ class OAuthRepositoryImplTest {
         val errorResponse = Response.error<OAuthResponse>(401, errorResponseBody)
         Mockito.`when`(oAuthService.authenticate(request))
                 .thenReturn(Single.error(HttpException(errorResponse)))
-        
+
         oAuthRepository.authenticate(request).test()
                 .assertError(SurveysUnauthorizedException::class.java)
 
