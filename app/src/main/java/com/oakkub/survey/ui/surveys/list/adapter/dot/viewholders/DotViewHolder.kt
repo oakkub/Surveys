@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.eggdigital.trueyouedc.extensions.views.inflate
 import com.oakkub.survey.R
+import com.oakkub.survey.ui.surveys.list.adapter.dot.DotIndicatorItemModel
 import kotlinx.android.extensions.LayoutContainer
 
 /**
@@ -12,8 +13,8 @@ import kotlinx.android.extensions.LayoutContainer
  */
 class DotViewHolder private constructor(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bind(selectedPosition: Int) {
-        containerView.isSelected = selectedPosition == adapterPosition
+    fun bind(model: DotIndicatorItemModel) {
+        containerView.isSelected = model.isSelected
     }
 
     companion object {
