@@ -1,4 +1,4 @@
-package com.oakkub.survey.ui.surveys.list.adapter.dot
+package com.oakkub.survey.ui.surveys.list.adapter.dot.viewholders
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
