@@ -17,6 +17,7 @@ import dagger.android.support.AndroidSupportInjectionModule
             AndroidSupportInjectionModule::class,
             AppModule::class,
             AuthenticationModule::class,
+            FrescoModule::class,
             LocalModule::class,
             NetworkModule::class,
             RepositoryModule::class,

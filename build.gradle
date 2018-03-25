@@ -15,7 +15,7 @@ buildscript {
         rxandroid_version = '2.0.2'
 
         dagger_version = '2.15'
-        glide_version = '4.6.1'
+        fresco_version = '1.8.1'
 
         kotlin_version = '1.2.30'
 
