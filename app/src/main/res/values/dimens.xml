@@ -21,4 +21,8 @@
     <dimen name="item_dot_size">24dp</dimen>
     <!--item_dot-->
 
+    <!--fragment_surveys-->
+    <dimen name="surveys_dot_indicator_list_width">24dp</dimen>
+    <!--fragment_surveys-->
+
 </resources>
