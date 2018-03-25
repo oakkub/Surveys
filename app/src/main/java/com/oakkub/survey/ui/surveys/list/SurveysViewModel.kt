@@ -37,15 +37,17 @@ class SurveysViewModel @Inject constructor(
 
     private fun getSurveys(surveysLoadingRequest: SurveysLoadingRequest, oAuthRequest: OAuthRequest, shouldRefresh: Boolean) {
         val currentState = result.value
-        when (currentState) {
-            is SurveysUiModel.Loading -> return
-            is SurveysUiModel.Success -> {
-                if (currentState.isComplete && !shouldRefresh) {
-                    return
-                }
+        if (currentState != null) {
+            when {
+                currentState.isLoading -> return
+                currentState.isComplete && !shouldRefresh -> return
             }
         }
-        result.value = SurveysUiModel.Loading(isFirstTime = surveysLoadingRequest.page == 1)
+        result.value = if (result.value == null) {
+            SurveysUiModel(isFirstTime = true, isLoading = true, isComplete = false)
+        } else {
+            result.value!!.copy(isFirstTime = surveysLoadingRequest.page == 1, isLoading = true)
+        }
 
         val (page, perPage) = surveysLoadingRequest
 
@@ -63,9 +65,12 @@ class SurveysViewModel @Inject constructor(
                     }
 
                     surveysItem += surveysResponse.toSet()
-                    result.postValue(SurveysUiModel.Success(surveysItem, didLoadComplete(surveysResponse, perPage)))
+                    result.postValue(result.value?.copy(
+                            surveys = surveysItem,
+                            isComplete = didLoadComplete(surveysResponse, perPage),
+                            isLoading = false))
                 }, { throwable ->
-                    result.postValue(SurveysUiModel.Error(throwable))
+                    result.postValue(result.value?.copy(error = throwable, isLoading = false))
                 })
     }
 

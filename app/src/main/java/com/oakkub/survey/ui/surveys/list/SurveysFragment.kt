@@ -17,6 +17,7 @@ import com.oakkub.survey.data.services.surveys.SurveyResponse
 import com.oakkub.survey.extensions.observe
 import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapter
 import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapterMapperImpl
+import com.oakkub.survey.widgets.recyclerview.EndlessScrollRecyclerViewListener
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_surveys.*
 import javax.inject.Inject
@@ -48,9 +49,12 @@ class SurveysFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(surveysItemRecyclerView) {
+            PagerSnapHelper().attachToRecyclerView(this)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = surveysItemAdapter
-            PagerSnapHelper().attachToRecyclerView(this)
+            addOnScrollListener(EndlessScrollRecyclerViewListener(VISIBLE_THRESHOLD) {
+                viewModel.getSurveys()
+            })
         }
     }
 
@@ -67,17 +71,15 @@ class SurveysFragment : BaseFragment() {
     }
 
     private fun updateView(surveysUiModel: SurveysUiModel) {
-        when (surveysUiModel) {
-            is SurveysUiModel.Error -> {
+        if (surveysUiModel.error != null) {
+            if (surveysUiModel.surveys.isEmpty()) {
                 surveysItemAdapter.submitList(listOf())
-                toast(surveysUiModel.throwable.message.toString())
             }
-            is SurveysUiModel.Loading,
-            is SurveysUiModel.Success -> {
-                val mappedResult = SurveysItemAdapterMapperImpl().map(surveysUiModel)
-                surveysItemAdapter.submitList(mappedResult)
-            }
+            toast(surveysUiModel.error.message.toString())
         }
+
+        val mappedResult = SurveysItemAdapterMapperImpl().map(surveysUiModel)
+        surveysItemAdapter.submitList(mappedResult)
     }
 
     fun refresh() {
@@ -89,6 +91,8 @@ class SurveysFragment : BaseFragment() {
     }
 
     companion object {
+
+        private const val VISIBLE_THRESHOLD = 3
 
         @JvmStatic
         fun newInstance(): SurveysFragment = SurveysFragment()

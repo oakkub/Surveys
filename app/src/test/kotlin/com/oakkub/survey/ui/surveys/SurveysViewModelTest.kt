@@ -79,8 +79,8 @@ class SurveysViewModelTest {
         verify(oAuthRepository).authenticate(oAuthRequest)
         verify(surveysRepository).getSurveys(surveyRequest)
 
-        verify(observer).onChanged(SurveysUiModel.Loading(isFirstTime = true))
-        verify(observer).onChanged(SurveysUiModel.Success(response.toSet(), false))
+        verify(observer).onChanged(SurveysUiModel(isFirstTime = true, isLoading = true))
+        verify(observer).onChanged(SurveysUiModel(surveys = response.toSet(), isFirstTime = true, isLoading = false))
 
         assertEquals(response.size, response.toSet().size)
     }
@@ -88,9 +88,9 @@ class SurveysViewModelTest {
     @Test
     fun `get surveys after it is loading should be ignore`() {
         surveysViewModel.result.observeForever(observer)
-        surveysViewModel.result.value = SurveysUiModel.Loading(isFirstTime = true)
+        surveysViewModel.result.value = SurveysUiModel(isFirstTime = true, isLoading = true)
 
-        verify(observer).onChanged(SurveysUiModel.Loading(isFirstTime = true))
+        verify(observer).onChanged(SurveysUiModel(isFirstTime = true, isLoading = true))
 
         surveysViewModel.getSurveys()
 
@@ -100,7 +100,7 @@ class SurveysViewModelTest {
 
     @Test
     fun `get surveys after it is completed should be ignore`() {
-        val completedResponse = SurveysUiModel.Success(setOf(), isComplete = true)
+        val completedResponse = SurveysUiModel(surveys = setOf(), isComplete = true)
         surveysViewModel.result.observeForever(observer)
         surveysViewModel.result.value = completedResponse
 
@@ -113,7 +113,7 @@ class SurveysViewModelTest {
     }
 
     @Test
-    fun `get surveys first time should have state loading isFirstTime=True`() {
+    fun `get surveys first time should have state loading isFirstTime=true and isLoading=true`() {
         surveysViewModel.result.observeForever(observer)
 
         whenever(surveysRepository.getSurveys(surveyRequest)) then {
@@ -122,7 +122,26 @@ class SurveysViewModelTest {
 
         surveysViewModel.getSurveys()
 
-        verify(observer).onChanged(SurveysUiModel.Loading(isFirstTime = true))
+        verify(observer).onChanged(SurveysUiModel(isFirstTime = true, isLoading = true))
+    }
+
+    @Test
+    fun `get surveys should complete`() {
+        surveysViewModel.result.observeForever(observer)
+
+        // Get per page of request and make it looks like it only be able to load half of what we are requesting
+        val halfOfWhatRequestingResponse = List(surveysLoadingRequest.perPage / 2) {
+            SurveyResponse("$it", "", "", "")
+        }
+        whenever(surveysRepository.getSurveys(surveyRequest)) then {
+            Single.just(halfOfWhatRequestingResponse)
+        }
+
+        surveysViewModel.getSurveys()
+
+        val model = SurveysUiModel(isFirstTime = true, isLoading = true)
+        verify(observer).onChanged(model)
+        verify(observer).onChanged(model.copy(surveys = halfOfWhatRequestingResponse.toSet(), isLoading = false, isComplete = true))
     }
 
 }
