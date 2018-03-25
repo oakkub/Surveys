@@ -7,4 +7,13 @@
     <dimen name="margin_padding_normal">8dp</dimen>
     <dimen name="margin_padding_large">16dp</dimen>
 
+    <!--button_rounded_accent_color-->
+    <dimen name="button_rounded_radius">80dp</dimen>
+    <!--button_rounded_accent_color-->
+
+    <!--item_surveys_content-->
+    <dimen name="surveys_item_title_text_size">26sp</dimen>
+    <dimen name="surveys_item_desc_text_size">18sp</dimen>
+    <!--item_surveys_content-->
+
 </resources>

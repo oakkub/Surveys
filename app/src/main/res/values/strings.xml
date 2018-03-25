@@ -7,4 +7,8 @@
     <string name="surveys_toolbar_title">Surveys</string>
     <!--SurveysActivity-->
 
+    <!--SurveysContentItemViewHolder-->
+    <string name="surveys_content_item_button">Take the survey</string>
+    <!--SurveysContentItemViewHolder-->
+
 </resources>
