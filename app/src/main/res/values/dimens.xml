@@ -17,4 +17,8 @@
     <dimen name="surveys_item_button_text_size">18sp</dimen>
     <!--item_surveys_content-->
 
+    <!--item_dot-->
+    <dimen name="item_dot_size">24dp</dimen>
+    <!--item_dot-->
+
 </resources>
