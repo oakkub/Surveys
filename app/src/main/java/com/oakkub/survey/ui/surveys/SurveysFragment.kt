@@ -18,7 +18,7 @@ class SurveysFragment : BaseFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var viewModel: SurveysViewModel
+    private lateinit var viewModel: SurveysViewModel
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -36,10 +36,7 @@ class SurveysFragment : BaseFragment() {
 
 
         })
-
-        if (savedInstanceState == null) {
-            viewModel.getSurveys()
-        }
+        viewModel.getSurveys()
     }
 
     companion object {

@@ -1,4 +1,4 @@
-package com.oakkub.survey.ui.surveys.adapter
+package com.oakkub.survey.ui.surveys.adapter.content
 
 import com.oakkub.survey.data.services.surveys.SurveyResponse
 
