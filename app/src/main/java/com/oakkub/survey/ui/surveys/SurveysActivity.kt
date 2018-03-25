@@ -1,11 +1,11 @@
 package com.oakkub.survey.ui.surveys
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import com.oakkub.survey.R
+import com.oakkub.survey.common.controller.BaseActivity
 import kotlinx.android.synthetic.main.activity_surveys.*
 
-class SurveysActivity : AppCompatActivity() {
+class SurveysActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -13,8 +13,15 @@ class SurveysActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .add(surveysRootContainer.id, SurveysFragment.newInstance())
+                    .add(surveysContentRootContainer.id, SurveysFragment.newInstance(), TAG_SURVEYS_FRAGMENT)
                     .commit()
         }
     }
+
+    companion object {
+
+        private const val TAG_SURVEYS_FRAGMENT = "TAG_SURVEYS_FRAGMENT"
+
+    }
+
 }
