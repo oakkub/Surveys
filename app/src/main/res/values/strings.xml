@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Surveys</string>
+
+    <!--SurveysActivity-->
+    <string name="surveys_content_desc_refresh">Refresh</string>
+    <string name="surveys_content_desc_menu">Menu</string>
+    <string name="surveys_toolbar_title">Surveys</string>
+    <!--SurveysActivity-->
+
+    <!--SurveysContentItemViewHolder-->
+    <string name="surveys_content_item_button">Take the survey</string>
+    <!--SurveysContentItemViewHolder-->
+
 </resources>

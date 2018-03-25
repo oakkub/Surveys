@@ -4,6 +4,8 @@ import android.app.Application
 import com.oakkub.survey.MainApplication
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjectionModule
+import dagger.android.support.AndroidSupportInjectionModule
 
 /**
  * Created by oakkub on 21/3/2018 AD.
@@ -11,12 +13,16 @@ import dagger.Component
 @Component(
         modules = [
             ActivityBinderModule::class,
+            AndroidInjectionModule::class,
+            AndroidSupportInjectionModule::class,
             AppModule::class,
-            NetworkModule::class,
+            AuthenticationModule::class,
+            FrescoModule::class,
             LocalModule::class,
+            NetworkModule::class,
             RepositoryModule::class,
             RxModule::class,
-            AuthenticationModule::class
+            ViewModelModule::class
         ]
 )
 interface AppComponent {
