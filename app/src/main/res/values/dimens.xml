@@ -17,4 +17,14 @@
     <dimen name="surveys_item_button_text_size">18sp</dimen>
     <!--item_surveys_content-->
 
+    <!--item_dot-->
+    <dimen name="item_dot_size">16dp</dimen>
+    <!--item_dot-->
+
+    <!--fragment_surveys-->
+    <dimen name="surveys_dot_indicator_list_width">16dp</dimen>
+    <dimen name="surveys_dot_indicator_padding_top">40dp</dimen>
+    <dimen name="surveys_dot_indicator_padding_bottom">40dp</dimen>
+    <!--fragment_surveys-->
+
 </resources>
