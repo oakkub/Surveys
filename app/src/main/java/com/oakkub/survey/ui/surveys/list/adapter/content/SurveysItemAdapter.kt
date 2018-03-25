@@ -11,16 +11,14 @@ import com.oakkub.survey.ui.surveys.list.adapter.content.viewholders.SurveysProg
 /**
  * Created by oakkub on 25/3/2018 AD.
  */
-typealias OnSurveyItemClickListener = (SurveysItemAdapterModel.Item) -> Unit
-
 class SurveysItemAdapter(private val onClick: OnSurveyItemClickListener) : ListAdapter<SurveysItemAdapterModel, RecyclerView.ViewHolder>(surveysItemAdapterModelDiffUtil) {
 
-    override fun getItemViewType(position: Int): Int = when(getItem(position)) {
+    override fun getItemViewType(position: Int): Int = when (getItem(position)) {
         is SurveysItemAdapterModel.Item -> ITEM_TYPE
         is SurveysItemAdapterModel.Loading -> LOADING_TYPE
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when(viewType) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when (viewType) {
         ITEM_TYPE -> SurveysContentItemViewHolder.create(parent)
         LOADING_TYPE -> SurveysProgressItemViewHolder.create(parent)
         else -> throw ViewTypeInvalidException()
@@ -55,3 +53,5 @@ class SurveysItemAdapter(private val onClick: OnSurveyItemClickListener) : ListA
     }
 
 }
+
+typealias OnSurveyItemClickListener = (SurveysItemAdapterModel.Item) -> Unit
