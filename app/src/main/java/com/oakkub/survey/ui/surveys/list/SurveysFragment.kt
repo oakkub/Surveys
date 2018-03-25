@@ -12,7 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.view.doOnPreDraw
 import com.eggdigital.trueyouedc.extensions.delegateTo
+import com.eggdigital.trueyouedc.extensions.views.invisible
 import com.eggdigital.trueyouedc.extensions.views.toast
+import com.eggdigital.trueyouedc.extensions.views.visible
 import com.oakkub.survey.R
 import com.oakkub.survey.common.controller.BaseFragment
 import com.oakkub.survey.data.services.surveys.SurveyResponse
@@ -133,11 +135,13 @@ class SurveysFragment : BaseFragment() {
 
     private fun updateDotIndicatorView(totalItem: Int) {
         if (totalItem <= 1) {
+            surveysDotItemRecyclerView.invisible()
             dotIndicatorAdapter.submitList(listOf())
             return
         }
 
         view?.doOnPreDraw {
+            surveysDotItemRecyclerView.visible()
             val selectedPosition = surveysLinearLayoutManager.findFirstCompletelyVisibleItemPosition()
             val mappedResult = DotIndicatorItemMapperImpl().map(totalItem, selectedPosition)
             dotIndicatorAdapter.submitList(mappedResult)
