@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.view.doOnPreDraw
 import com.eggdigital.trueyouedc.extensions.delegateTo
 import com.eggdigital.trueyouedc.extensions.views.toast
 import com.oakkub.survey.R
@@ -18,6 +19,7 @@ import com.oakkub.survey.data.services.surveys.SurveyResponse
 import com.oakkub.survey.extensions.observe
 import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapter
 import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapterMapperImpl
+import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapterModel
 import com.oakkub.survey.ui.surveys.list.adapter.dot.DotIndicatorItemAdapter
 import com.oakkub.survey.ui.surveys.list.adapter.dot.DotIndicatorItemMapperImpl
 import com.oakkub.survey.widgets.recyclerview.EndlessScrollRecyclerViewListener
@@ -91,25 +93,28 @@ class SurveysFragment : BaseFragment() {
 
         val mappedResult = SurveysItemAdapterMapperImpl().map(surveysUiModel)
         surveysItemAdapter.submitList(mappedResult)
-        updateDotIndicatorView(mappedResult.size)
+        updateDotIndicatorView(mappedResult.count { it is SurveysItemAdapterModel.Item })
     }
 
     private fun initSurveysRecyclerView() {
         with(surveysItemRecyclerView) {
-            PagerSnapHelper().attachToRecyclerView(this)
             layoutManager = surveysLinearLayoutManager
             adapter = surveysItemAdapter
+
+            PagerSnapHelper().attachToRecyclerView(this)
             setHasFixedSize(true)
+
             addOnScrollListener(EndlessScrollRecyclerViewListener(VISIBLE_THRESHOLD) {
                 viewModel.getSurveys()
             })
+
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    if (newState != RecyclerView.SCROLL_STATE_IDLE) {
+                    if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                         return
                     }
-                    updateDotIndicatorView(surveysItemAdapter.itemCount)
+                    updateDotIndicatorView(recyclerView.layoutManager.itemCount)
                 }
             })
         }
@@ -119,6 +124,7 @@ class SurveysFragment : BaseFragment() {
         with(surveysDotItemRecyclerView) {
             layoutManager = dotIndicatorLayoutManager
             adapter = dotIndicatorAdapter
+
             addItemDecoration(LinearOffsetItemDecoration(resources.getDimension(R.dimen.margin_padding_normal).toInt(), false))
             setHasFixedSize(true)
         }
@@ -126,18 +132,15 @@ class SurveysFragment : BaseFragment() {
 
     private fun updateDotIndicatorView(totalItem: Int) {
         if (totalItem <= 1) {
+            dotIndicatorAdapter.submitList(listOf())
             return
         }
 
-        val selectedPosition = surveysLinearLayoutManager.findLastCompletelyVisibleItemPosition()
-        val mappedResult = DotIndicatorItemMapperImpl().map(totalItem, selectedPosition)
-        dotIndicatorAdapter.submitList(mappedResult)
-
-        when (selectedPosition) {
-            dotIndicatorLayoutManager.findFirstVisibleItemPosition(),
-            dotIndicatorLayoutManager.findLastVisibleItemPosition() -> {
-                dotIndicatorLayoutManager.scrollToPositionWithOffset(selectedPosition, resources.getDimension(R.dimen.margin_padding_large).toInt())
-            }
+        view?.doOnPreDraw {
+            val selectedPosition = surveysLinearLayoutManager.findFirstCompletelyVisibleItemPosition()
+            val mappedResult = DotIndicatorItemMapperImpl().map(totalItem, selectedPosition)
+            dotIndicatorAdapter.submitList(mappedResult)
+            dotIndicatorLayoutManager.scrollToPositionWithOffset(selectedPosition, resources.getDimension(R.dimen.margin_padding_large).toInt())
         }
     }
 
@@ -153,7 +156,6 @@ class SurveysFragment : BaseFragment() {
 
         private const val VISIBLE_THRESHOLD = 3
 
-        @JvmStatic
         fun newInstance(): SurveysFragment = SurveysFragment()
 
     }
