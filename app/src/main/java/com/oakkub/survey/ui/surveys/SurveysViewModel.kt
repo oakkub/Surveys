@@ -11,7 +11,6 @@ import com.oakkub.survey.data.services.surveys.SurveyResponse
 import com.oakkub.survey.extensions.plusAssign
 
 
-
 /**
  * Created by oakkub on 24/3/2018 AD.
  */
@@ -31,6 +30,10 @@ class SurveysViewModel constructor(
         getSurveys(surveysLoadingRequest, oAuthRequest)
     }
 
+    fun refresh() {
+        getSurveys(surveysLoadingRequest.copy(page = 1), oAuthRequest)
+    }
+
     private fun getSurveys(surveysLoadingRequest: SurveysLoadingRequest, oAuthRequest: OAuthRequest) {
         val currentState = result.value
         when (currentState) {
@@ -46,6 +49,10 @@ class SurveysViewModel constructor(
                 .flatMap { request -> surveysRepository.getSurveys(request) }
                 .subscribeOn(schedulerProvider.io())
                 .subscribe({ surveysResponse ->
+                    if (shouldRefresh(surveysLoadingRequest)) {
+                        surveysItem = setOf()
+                    }
+
                     if (shouldLoadMore(surveysResponse, perPage)) {
                         this.surveysLoadingRequest = surveysLoadingRequest.copy(page = page + 1)
                     }
@@ -56,6 +63,8 @@ class SurveysViewModel constructor(
                     result.postValue(SurveysUiModel.Error(throwable))
                 })
     }
+
+    private fun shouldRefresh(surveysLoadingRequest: SurveysLoadingRequest) = surveysLoadingRequest.page == 1
 
     private fun shouldLoadMore(surveysResponse: List<SurveyResponse>, perPage: Int) = surveysResponse.size == perPage
 
