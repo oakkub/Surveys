@@ -63,7 +63,10 @@ class SurveysFragment : BaseFragment() {
 
     private fun updateView(surveysUiModel: SurveysUiModel) {
         when (surveysUiModel) {
-            is SurveysUiModel.Error -> toast(surveysUiModel.throwable.message.toString())
+            is SurveysUiModel.Error -> {
+                surveysItemAdapter.submitList(listOf())
+                toast(surveysUiModel.throwable.message.toString())
+            }
             is SurveysUiModel.Loading,
             is SurveysUiModel.Success -> {
                 val mappedResult = SurveysItemAdapterMapperImpl().map(surveysUiModel)
