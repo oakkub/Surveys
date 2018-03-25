@@ -28,18 +28,22 @@ class SurveysViewModel @Inject constructor(
     private var surveysItem = setOf<SurveyResponse>()
 
     fun getSurveys() {
-        getSurveys(surveysLoadingRequest, oAuthRequest)
+        getSurveys(surveysLoadingRequest, oAuthRequest, false)
     }
 
     fun refresh() {
-        getSurveys(surveysLoadingRequest.copy(page = 1), oAuthRequest)
+        getSurveys(surveysLoadingRequest.copy(page = 1), oAuthRequest, true)
     }
 
-    private fun getSurveys(surveysLoadingRequest: SurveysLoadingRequest, oAuthRequest: OAuthRequest) {
+    private fun getSurveys(surveysLoadingRequest: SurveysLoadingRequest, oAuthRequest: OAuthRequest, shouldRefresh: Boolean) {
         val currentState = result.value
         when (currentState) {
             is SurveysUiModel.Loading -> return
-            is SurveysUiModel.Success -> if (currentState.isComplete) return
+            is SurveysUiModel.Success -> {
+                if (currentState.isComplete && !shouldRefresh) {
+                    return
+                }
+            }
         }
         result.value = SurveysUiModel.Loading(isFirstTime = surveysLoadingRequest.page == 1)
 

@@ -11,6 +11,14 @@ class SurveysActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_surveys)
 
+        surveysRefreshImageView.setOnClickListener {
+            val surveysFragment = supportFragmentManager.findFragmentByTag(TAG_SURVEYS_FRAGMENT)
+                    as? SurveysFragment
+                    ?: return@setOnClickListener
+
+            surveysFragment.refresh()
+        }
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                     .add(surveysContentRootContainer.id, SurveysFragment.newInstance(), TAG_SURVEYS_FRAGMENT)

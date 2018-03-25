@@ -66,6 +66,10 @@ class SurveysFragment : BaseFragment() {
         }
     }
 
+    fun refresh() {
+        viewModel.refresh()
+    }
+
     companion object {
 
         @JvmStatic
