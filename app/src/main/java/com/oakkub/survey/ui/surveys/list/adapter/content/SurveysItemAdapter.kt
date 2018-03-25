@@ -43,7 +43,7 @@ class SurveysItemAdapter(private val onClick: OnSurveyItemClickListener) : ListA
                 return if (oldItem is SurveysItemAdapterModel.Item && newItem is SurveysItemAdapterModel.Item) {
                     oldItem.surveyResponse.id == newItem.surveyResponse.id
                 } else {
-                    true
+                    false
                 }
             }
 
