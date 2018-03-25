@@ -126,6 +126,7 @@ class SurveysFragment : BaseFragment() {
             adapter = dotIndicatorAdapter
 
             addItemDecoration(LinearOffsetItemDecoration(resources.getDimension(R.dimen.margin_padding_normal).toInt(), false))
+            setOnTouchListener { _, _ -> true }
             setHasFixedSize(true)
         }
     }

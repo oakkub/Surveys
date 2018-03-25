@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.eggdigital.trueyouedc.extensions.views.inflate
+import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.imagepipeline.request.ImageRequest
 import com.oakkub.survey.R
 import com.oakkub.survey.ui.surveys.list.adapter.content.OnSurveyItemClickListener
 import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapterModel
@@ -21,9 +23,18 @@ class SurveysContentItemViewHolder private constructor(override val containerVie
         }
 
         val response = item.surveyResponse
-        surveysItemCoverImageView.setImageURI(response.highResCoverImageUrl)
         surveysItemTitleTextView.text = response.title
         surveysItemDescriptionTextView.text = response.description
+        loadImage(response.highResCoverImageUrl, response.lowResImageUrl)
+    }
+
+    private fun loadImage(highResUrl: String, lowResUrl: String) {
+        val newController = Fresco.newDraweeControllerBuilder()
+                .setImageRequest(ImageRequest.fromUri(highResUrl))
+                .setLowResImageRequest(ImageRequest.fromUri(lowResUrl))
+                .setOldController(surveysItemCoverImageView.controller)
+                .build()
+        surveysItemCoverImageView.controller = newController
     }
 
     companion object {
