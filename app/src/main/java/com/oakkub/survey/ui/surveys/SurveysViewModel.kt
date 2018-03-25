@@ -41,7 +41,7 @@ class SurveysViewModel @Inject constructor(
             is SurveysUiModel.Loading -> return
             is SurveysUiModel.Success -> if (currentState.isComplete) return
         }
-        result.value = SurveysUiModel.Loading
+        result.value = SurveysUiModel.Loading(isFirstTime = surveysLoadingRequest.page == 1)
 
         val (page, perPage) = surveysLoadingRequest
 

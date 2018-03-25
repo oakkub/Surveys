@@ -76,7 +76,7 @@ class SurveysViewModelTest {
         verify(oAuthRepository).authenticate(oAuthRequest)
         verify(surveysRepository).getSurveys(surveyRequest)
 
-        verify(observer).onChanged(SurveysUiModel.Loading)
+        verify(observer).onChanged(SurveysUiModel.Loading(isFirstTime = true))
         verify(observer).onChanged(SurveysUiModel.Success(response.toSet(), false))
 
         assertEquals(response.size, response.toSet().size)
@@ -85,9 +85,9 @@ class SurveysViewModelTest {
     @Test
     fun `get surveys after it is loading should be ignore`() {
         surveysViewModel.result.observeForever(observer)
-        surveysViewModel.result.value = SurveysUiModel.Loading
+        surveysViewModel.result.value = SurveysUiModel.Loading(isFirstTime = true)
 
-        verify(observer).onChanged(SurveysUiModel.Loading)
+        verify(observer).onChanged(SurveysUiModel.Loading(isFirstTime = true))
 
         surveysViewModel.getSurveys()
 
@@ -107,6 +107,19 @@ class SurveysViewModelTest {
 
         verify(oAuthRepository, never()).authenticate(oAuthRequest)
         verify(surveysRepository, never()).getSurveys(surveyRequest)
+    }
+
+    @Test
+    fun `get surveys first time should have state loading isFirstTime=True`() {
+        surveysViewModel.result.observeForever(observer)
+
+        whenever(surveysRepository.getSurveys(surveyRequest)) then {
+            Single.just(listOf())
+        }
+
+        surveysViewModel.getSurveys()
+
+        verify(observer).onChanged(SurveysUiModel.Loading(isFirstTime = true))
     }
 
 }
