@@ -8,10 +8,10 @@ import com.oakkub.survey.ui.surveys.list.SurveysUiModel
 class SurveysItemAdapterMapperImpl : SurveysItemAdapterMapper {
 
     override fun map(uiModel: SurveysUiModel): List<SurveysItemAdapterModel> {
-        if (uiModel is SurveysUiModel.Loading && uiModel.isFirstTime) {
+        if (uiModel.isLoading && uiModel.isFirstTime) {
             return listOf(SurveysItemAdapterModel.Loading)
         }
-        if (uiModel !is SurveysUiModel.Success) {
+        if (uiModel.surveys.isEmpty()) {
             return emptyList()
         }
 
