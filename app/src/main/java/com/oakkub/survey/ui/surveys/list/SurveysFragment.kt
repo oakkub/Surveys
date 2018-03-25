@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PagerSnapHelper
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,10 @@ import com.oakkub.survey.data.services.surveys.SurveyResponse
 import com.oakkub.survey.extensions.observe
 import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapter
 import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapterMapperImpl
+import com.oakkub.survey.ui.surveys.list.adapter.dot.DotIndicatorItemAdapter
+import com.oakkub.survey.ui.surveys.list.adapter.dot.DotIndicatorItemMapperImpl
 import com.oakkub.survey.widgets.recyclerview.EndlessScrollRecyclerViewListener
+import com.oakkub.survey.widgets.recyclerview.LinearOffsetItemDecoration
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_surveys.*
 import javax.inject.Inject
@@ -29,12 +33,24 @@ class SurveysFragment : BaseFragment() {
 
     private lateinit var viewModel: SurveysViewModel
 
+    private val surveysLinearLayoutManager by lazy {
+        LinearLayoutManager(requireContext())
+    }
+
     private val surveysItemAdapter: SurveysItemAdapter by lazy {
         SurveysItemAdapter { survey ->
             delegateTo<OnNavigationListener> { onNavigationListener ->
                 onNavigationListener.onTakeSurvey(survey.surveyResponse)
             }
         }
+    }
+
+    private val dotIndicatorLayoutManager by lazy {
+        LinearLayoutManager(requireContext())
+    }
+
+    private val dotIndicatorAdapter: DotIndicatorItemAdapter by lazy {
+        DotIndicatorItemAdapter()
     }
 
     override fun onAttach(context: Context?) {
@@ -48,14 +64,8 @@ class SurveysFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(surveysItemRecyclerView) {
-            PagerSnapHelper().attachToRecyclerView(this)
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = surveysItemAdapter
-            addOnScrollListener(EndlessScrollRecyclerViewListener(VISIBLE_THRESHOLD) {
-                viewModel.getSurveys()
-            })
-        }
+        initSurveysRecyclerView()
+        initDotIndicatorRecyclerView()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -74,12 +84,61 @@ class SurveysFragment : BaseFragment() {
         if (surveysUiModel.error != null) {
             if (surveysUiModel.surveys.isEmpty()) {
                 surveysItemAdapter.submitList(listOf())
+                dotIndicatorAdapter.submitList(listOf())
             }
             toast(surveysUiModel.error.message.toString())
         }
 
         val mappedResult = SurveysItemAdapterMapperImpl().map(surveysUiModel)
         surveysItemAdapter.submitList(mappedResult)
+        updateDotIndicatorView(mappedResult.size)
+    }
+
+    private fun initSurveysRecyclerView() {
+        with(surveysItemRecyclerView) {
+            PagerSnapHelper().attachToRecyclerView(this)
+            layoutManager = surveysLinearLayoutManager
+            adapter = surveysItemAdapter
+            setHasFixedSize(true)
+            addOnScrollListener(EndlessScrollRecyclerViewListener(VISIBLE_THRESHOLD) {
+                viewModel.getSurveys()
+            })
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState != RecyclerView.SCROLL_STATE_IDLE) {
+                        return
+                    }
+                    updateDotIndicatorView(surveysItemAdapter.itemCount)
+                }
+            })
+        }
+    }
+
+    private fun initDotIndicatorRecyclerView() {
+        with(surveysDotItemRecyclerView) {
+            layoutManager = dotIndicatorLayoutManager
+            adapter = dotIndicatorAdapter
+            addItemDecoration(LinearOffsetItemDecoration(resources.getDimension(R.dimen.margin_padding_normal).toInt(), false))
+            setHasFixedSize(true)
+        }
+    }
+
+    private fun updateDotIndicatorView(totalItem: Int) {
+        if (totalItem <= 1) {
+            return
+        }
+
+        val selectedPosition = surveysLinearLayoutManager.findLastCompletelyVisibleItemPosition()
+        val mappedResult = DotIndicatorItemMapperImpl().map(totalItem, selectedPosition)
+        dotIndicatorAdapter.submitList(mappedResult)
+
+        when (selectedPosition) {
+            dotIndicatorLayoutManager.findFirstVisibleItemPosition(),
+            dotIndicatorLayoutManager.findLastVisibleItemPosition() -> {
+                dotIndicatorLayoutManager.scrollToPositionWithOffset(selectedPosition, resources.getDimension(R.dimen.margin_padding_large).toInt())
+            }
+        }
     }
 
     fun refresh() {

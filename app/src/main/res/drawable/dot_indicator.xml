@@ -17,7 +17,7 @@
 
             <solid android:color="@android:color/transparent" />
 
-            <stroke android:width="@dimen/margin_padding_small" android:color="@android:color/white" />
+            <stroke android:width="@dimen/margin_padding_x_small" android:color="@android:color/white" />
 
         </shape>
 
