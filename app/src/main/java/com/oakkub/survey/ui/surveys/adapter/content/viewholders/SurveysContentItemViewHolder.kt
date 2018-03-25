@@ -5,12 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import com.eggdigital.trueyouedc.extensions.views.inflate
 import com.oakkub.survey.R
+import com.oakkub.survey.ui.surveys.adapter.content.SurveysItemAdapterModel
 import kotlinx.android.extensions.LayoutContainer
 
 /**
  * Created by oakkub on 25/3/2018 AD.
  */
 class SurveysContentItemViewHolder private constructor(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+
+    fun bind(item: SurveysItemAdapterModel.Item) {
+
+    }
 
     companion object {
         fun create(parent: ViewGroup): SurveysContentItemViewHolder {
