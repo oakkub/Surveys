@@ -1,4 +1,4 @@
-package com.oakkub.survey.ui.surveys
+package com.oakkub.survey.ui.surveys.list
 
 import android.arch.lifecycle.MutableLiveData
 import com.oakkub.survey.common.controller.BaseViewModel

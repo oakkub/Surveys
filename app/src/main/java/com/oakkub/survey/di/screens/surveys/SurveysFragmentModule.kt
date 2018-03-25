@@ -4,8 +4,8 @@ import com.oakkub.survey.common.thread.SchedulerProvider
 import com.oakkub.survey.data.repository.oauth.OAuthRepository
 import com.oakkub.survey.data.repository.surveys.SurveysRepository
 import com.oakkub.survey.data.services.oauth.OAuthRequest
-import com.oakkub.survey.ui.surveys.SurveysLoadingRequest
-import com.oakkub.survey.ui.surveys.SurveysViewModel
+import com.oakkub.survey.ui.surveys.list.SurveysLoadingRequest
+import com.oakkub.survey.ui.surveys.list.SurveysViewModel
 import dagger.Module
 import dagger.Provides
 

@@ -5,7 +5,7 @@
     android:id="@+id/surveysRootContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.oakkub.survey.ui.surveys.SurveysActivity">
+    tools:context="com.oakkub.survey.ui.surveys.list.SurveysActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/surveysAppBarLayout"

@@ -1,6 +1,6 @@
 package com.oakkub.survey.di.screens.surveys
 
-import com.oakkub.survey.ui.surveys.SurveysFragment
+import com.oakkub.survey.ui.surveys.list.SurveysFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

@@ -1,6 +1,6 @@
 package com.oakkub.survey.ui.surveys.adapter.content
 
-import com.oakkub.survey.ui.surveys.SurveysUiModel
+import com.oakkub.survey.ui.surveys.list.SurveysUiModel
 
 /**
  * Created by oakkub on 25/3/2018 AD.

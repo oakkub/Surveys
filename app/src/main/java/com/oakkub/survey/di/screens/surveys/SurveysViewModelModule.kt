@@ -2,7 +2,7 @@ package com.oakkub.survey.di.screens.surveys
 
 import android.arch.lifecycle.ViewModel
 import com.oakkub.survey.common.annotations.ViewModelKey
-import com.oakkub.survey.ui.surveys.SurveysViewModel
+import com.oakkub.survey.ui.surveys.list.SurveysViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

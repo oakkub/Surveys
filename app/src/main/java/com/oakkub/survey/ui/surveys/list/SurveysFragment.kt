@@ -1,4 +1,4 @@
-package com.oakkub.survey.ui.surveys
+package com.oakkub.survey.ui.surveys.list
 
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders

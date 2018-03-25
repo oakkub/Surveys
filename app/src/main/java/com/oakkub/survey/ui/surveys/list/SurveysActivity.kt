@@ -1,4 +1,4 @@
-package com.oakkub.survey.ui.surveys
+package com.oakkub.survey.ui.surveys.list
 
 import android.os.Bundle
 import com.oakkub.survey.R

@@ -11,6 +11,9 @@ import com.oakkub.survey.data.services.surveys.SurveyRequest
 import com.oakkub.survey.data.services.surveys.SurveyResponse
 import com.oakkub.survey.ext.then
 import com.oakkub.survey.ext.whenever
+import com.oakkub.survey.ui.surveys.list.SurveysLoadingRequest
+import com.oakkub.survey.ui.surveys.list.SurveysUiModel
+import com.oakkub.survey.ui.surveys.list.SurveysViewModel
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.junit.Assert.assertEquals
