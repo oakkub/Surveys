@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.eggdigital.trueyouedc.extensions.views.toast
 import com.oakkub.survey.R
 import com.oakkub.survey.common.controller.BaseFragment
+import com.oakkub.survey.data.services.surveys.SurveyResponse
 import com.oakkub.survey.extensions.observe
 import com.oakkub.survey.ui.surveys.adapter.content.SurveysItemAdapter
 import com.oakkub.survey.ui.surveys.adapter.content.SurveysItemAdapterMapperImpl
@@ -68,6 +69,10 @@ class SurveysFragment : BaseFragment() {
 
     fun refresh() {
         viewModel.refresh()
+    }
+
+    interface OnNavigationListener {
+        fun onTakeSurvey(surveyResponse: SurveyResponse)
     }
 
     companion object {
