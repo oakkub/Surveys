@@ -58,7 +58,12 @@ class SurveysFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(SurveysViewModel::class.java)
         viewModel.result.observe(this, this::updateView)
-        viewModel.getSurveys()
+
+        // savedInstanceState will always be null in fragment if we don't save any state :(
+        // So I decided to check first time this way
+        if (viewModel.result.value == null) {
+            viewModel.getSurveys()
+        }
     }
 
     private fun updateView(surveysUiModel: SurveysUiModel) {
