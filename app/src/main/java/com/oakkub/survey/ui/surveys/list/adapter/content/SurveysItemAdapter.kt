@@ -1,17 +1,19 @@
-package com.oakkub.survey.ui.surveys.adapter.content
+package com.oakkub.survey.ui.surveys.list.adapter.content
 
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.oakkub.survey.exceptions.ViewTypeInvalidException
-import com.oakkub.survey.ui.surveys.adapter.content.viewholders.SurveysContentItemViewHolder
-import com.oakkub.survey.ui.surveys.adapter.content.viewholders.SurveysProgressItemViewHolder
+import com.oakkub.survey.ui.surveys.list.adapter.content.viewholders.SurveysContentItemViewHolder
+import com.oakkub.survey.ui.surveys.list.adapter.content.viewholders.SurveysProgressItemViewHolder
 
 /**
  * Created by oakkub on 25/3/2018 AD.
  */
-class SurveysItemAdapter : ListAdapter<SurveysItemAdapterModel, RecyclerView.ViewHolder>(surveysItemAdapterModelDiffUtil) {
+typealias OnSurveyItemClickListener = (SurveysItemAdapterModel.Item) -> Unit
+
+class SurveysItemAdapter(private val onClick: OnSurveyItemClickListener) : ListAdapter<SurveysItemAdapterModel, RecyclerView.ViewHolder>(surveysItemAdapterModelDiffUtil) {
 
     override fun getItemViewType(position: Int): Int = when(getItem(position)) {
         is SurveysItemAdapterModel.Item -> ITEM_TYPE
@@ -27,7 +29,7 @@ class SurveysItemAdapter : ListAdapter<SurveysItemAdapterModel, RecyclerView.Vie
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         when {
-            holder is SurveysContentItemViewHolder && item is SurveysItemAdapterModel.Item -> holder.bind(item)
+            holder is SurveysContentItemViewHolder && item is SurveysItemAdapterModel.Item -> holder.bind(item, onClick)
         }
     }
 

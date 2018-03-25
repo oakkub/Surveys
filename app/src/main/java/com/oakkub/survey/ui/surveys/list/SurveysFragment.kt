@@ -9,13 +9,14 @@ import android.support.v7.widget.PagerSnapHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.eggdigital.trueyouedc.extensions.delegateTo
 import com.eggdigital.trueyouedc.extensions.views.toast
 import com.oakkub.survey.R
 import com.oakkub.survey.common.controller.BaseFragment
 import com.oakkub.survey.data.services.surveys.SurveyResponse
 import com.oakkub.survey.extensions.observe
-import com.oakkub.survey.ui.surveys.adapter.content.SurveysItemAdapter
-import com.oakkub.survey.ui.surveys.adapter.content.SurveysItemAdapterMapperImpl
+import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapter
+import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapterMapperImpl
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_surveys.*
 import javax.inject.Inject
@@ -28,7 +29,11 @@ class SurveysFragment : BaseFragment() {
     private lateinit var viewModel: SurveysViewModel
 
     private val surveysItemAdapter: SurveysItemAdapter by lazy {
-        SurveysItemAdapter()
+        SurveysItemAdapter { survey ->
+            delegateTo<OnNavigationListener> { onNavigationListener ->
+                onNavigationListener.onTakeSurvey(survey.surveyResponse)
+            }
+        }
     }
 
     override fun onAttach(context: Context?) {
