@@ -32,13 +32,32 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "stage"
+    productFlavors {
+        staging {
+            applicationIdSuffix "staging"
+            versionNameSuffix "-staging"
+        }
+        production {
+
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     sourceSets {
-        test.java.srcDirs += 'src/test/kotlin'
+        staging {
+            res.srcDirs += 'src/staging/res'
+        }
+        test {
+            java.srcDirs += 'src/test/kotlin'
+        }
     }
+
     androidExtensions {
         experimental = true
     }
