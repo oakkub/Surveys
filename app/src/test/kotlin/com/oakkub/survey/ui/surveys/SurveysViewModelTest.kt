@@ -144,4 +144,32 @@ class SurveysViewModelTest {
         verify(observer).onChanged(model.copy(surveys = halfOfWhatRequestingResponse.toSet(), isLoading = false, isComplete = true))
     }
 
+    @Test
+    fun `refresh surveys should start loading new item`() {
+        surveysViewModel.result.observeForever(observer)
+
+        val response = List(surveysLoadingRequest.perPage) {
+            SurveyResponse("$it", "", "", "")
+        }
+        val responseSecondTime = List(surveysLoadingRequest.perPage) {
+            SurveyResponse("$it Second", "", "", "")
+        }
+        whenever(surveysRepository.getSurveys(surveyRequest)) then {
+            Single.just(response)
+        } then {
+            Single.just(responseSecondTime)
+        }
+
+        val model = SurveysUiModel(isFirstTime = true, isLoading = true)
+        surveysViewModel.getSurveys()
+
+        verify(observer).onChanged(model)
+        verify(observer).onChanged(model.copy(surveys = response.toSet(), isLoading = false))
+
+        surveysViewModel.refresh()
+
+        verify(observer).onChanged(model.copy(isFirstTime = true, isLoading = true))
+        verify(observer).onChanged(model.copy(surveys = response.toSet(), isLoading = false))
+    }
+
 }
