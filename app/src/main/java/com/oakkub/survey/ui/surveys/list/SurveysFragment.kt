@@ -11,14 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.view.doOnPreDraw
-import com.oakkub.survey.extensions.delegateTo
-import com.oakkub.survey.extensions.invisible
-import com.oakkub.survey.extensions.toast
-import com.oakkub.survey.extensions.visible
 import com.oakkub.survey.R
 import com.oakkub.survey.common.controller.BaseFragment
 import com.oakkub.survey.data.services.surveys.SurveyResponse
-import com.oakkub.survey.extensions.observe
+import com.oakkub.survey.extensions.*
 import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapter
 import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapterMapperImpl
 import com.oakkub.survey.ui.surveys.list.adapter.content.SurveysItemAdapterModel
@@ -74,7 +70,7 @@ class SurveysFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(SurveysViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SurveysViewModel::class.java)
         viewModel.result.observe(this, this::updateView)
 
         // savedInstanceState will always be null in fragment if we don't save any state :(
