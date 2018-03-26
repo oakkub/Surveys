@@ -5,7 +5,8 @@ package com.oakkub.survey.common.constants
  */
 object Endpoints {
 
-    const val BASE_URL = "https://nimbl3-survey-api.herokuapp.com/"
+    val BASE_URL: String
+        get() = BaseUrlProviderImpl().baseUrl
 
     const val OAUTH = "oauth/token"
     const val SURVEYS = "surveys.json"
