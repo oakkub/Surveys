@@ -26,19 +26,42 @@ android {
             aaptOptions {
                 cruncherEnabled = false
             }
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-fresco.pro'
         }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-fresco.pro'
         }
     }
+
+    flavorDimensions "stage"
+    productFlavors {
+        staging {
+            applicationIdSuffix "staging"
+            versionNameSuffix "-staging"
+        }
+        production {
+
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     sourceSets {
-        test.java.srcDirs += 'src/test/kotlin'
+        staging {
+            res.srcDirs += 'src/staging/res'
+        }
+        test {
+            java.srcDirs += 'src/test/kotlin'
+        }
     }
+
     androidExtensions {
         experimental = true
     }
