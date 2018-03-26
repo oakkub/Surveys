@@ -1,4 +1,4 @@
-package com.eggdigital.trueyouedc.extensions
+package com.oakkub.survey.extensions
 
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
