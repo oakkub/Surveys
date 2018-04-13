@@ -4,7 +4,7 @@ buildscript {
     ext {
         // implementation dependencies version
         arch_component_version = '1.1.1'
-        support_version = '27.1.0'
+        support_version = '27.1.1'
         constraint_layout = '1.1.0-beta5'
         android_ktx_version = '0.2'
 
@@ -33,7 +33,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
