@@ -41,6 +41,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "io.gitlab.arturbosch.detekt" version '1.0.0.RC6-4'
+}
+
 allprojects {
     repositories {
         google()
@@ -50,4 +54,15 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+detekt {
+    profile("main") {
+        input = "$projectDir"
+        config = "$projectDir/detekt-config.yml"
+        filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+        output = "$project.buildDir/reports/detekt/"
+        parallel = true
+        disableDefaultRuleSets = false
+    }
 }
