@@ -31,7 +31,7 @@ class OAuthLocalDataSourceImpl @Inject constructor(
         val expiresIn = sharedPreferences.getLong(PREF_KEY_O_AUTH_REPO_EXPIRES_IN, -1)
         val createdAt = sharedPreferences.getLong(PREF_KEY_O_AUTH_REPO_CREATED_AT, -1)
 
-        if (accessToken == "" && tokenType == "" && expiresIn == -1L && createdAt == -1L) {
+        if (isLocalDataSourceNotExist(sharedPreferences)) {
             emitter.onSuccess(OAuthLocalResponse.Empty)
             return@create
         }
@@ -54,6 +54,10 @@ class OAuthLocalDataSourceImpl @Inject constructor(
             remove(PREF_KEY_O_AUTH_REPO_EXPIRES_IN)
             remove(PREF_KEY_O_AUTH_REPO_CREATED_AT)
         }
+    }
+
+    private fun isLocalDataSourceNotExist(sharedPreferences: SharedPreferences): Boolean {
+        return sharedPreferences.getString(PREF_KEY_O_AUTH_REPO_ACCESS_TOKEN, "").isBlank()
     }
 
 }
