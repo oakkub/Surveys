@@ -30,16 +30,24 @@ class LinearOffsetItemDecoration(@param:Px private val space: Int,
         }
 
         if (layoutManager.orientation == LinearLayoutManager.VERTICAL) {
-            outRect.top = if (!shouldIncludeEdge && adapterPosition == 0) 0 else space
-            outRect.left = if (shouldIncludeEdge) space else 0
-            outRect.right = if (shouldIncludeEdge) space else 0
-            outRect.bottom = if (shouldIncludeEdge && isLastPosition(layoutManager, adapterPosition)) space else 0
+            setSpaceInVertical(outRect, adapterPosition, layoutManager)
         } else {
-            outRect.top = if (shouldIncludeEdge) space else 0
-            outRect.left = if (!shouldIncludeEdge && adapterPosition == 0) 0 else space
-            outRect.right = if (shouldIncludeEdge && isLastPosition(layoutManager, adapterPosition)) space else 0
-            outRect.bottom = if (shouldIncludeEdge) space else 0
+            setSpaceInHorizontal(outRect, adapterPosition, layoutManager)
         }
+    }
+
+    private fun setSpaceInVertical(outRect: Rect, adapterPosition: Int, layoutManager: LinearLayoutManager) {
+        outRect.top = if (!shouldIncludeEdge && adapterPosition == 0) 0 else space
+        outRect.left = if (shouldIncludeEdge) space else 0
+        outRect.right = if (shouldIncludeEdge) space else 0
+        outRect.bottom = if (shouldIncludeEdge && isLastPosition(layoutManager, adapterPosition)) space else 0
+    }
+
+    private fun setSpaceInHorizontal(outRect: Rect, adapterPosition: Int, layoutManager: LinearLayoutManager) {
+        outRect.top = if (shouldIncludeEdge) space else 0
+        outRect.left = if (!shouldIncludeEdge && adapterPosition == 0) 0 else space
+        outRect.right = if (shouldIncludeEdge && isLastPosition(layoutManager, adapterPosition)) space else 0
+        outRect.bottom = if (shouldIncludeEdge) space else 0
     }
 
     private fun isLastPosition(layoutManager: LinearLayoutManager, itemPosition: Int): Boolean {
