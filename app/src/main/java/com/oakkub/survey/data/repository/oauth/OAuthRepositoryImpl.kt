@@ -34,7 +34,7 @@ class OAuthRepositoryImpl @Inject constructor(
                     }
                 }
                 .onErrorResumeNext { throwable ->
-                    if (throwable is HttpException && throwable.code() == 401) {
+                    if (throwable is HttpException && throwable.code() == UNAUTHORIZED_STATUS_CODE) {
                         Single.error(SurveysUnauthorizedException())
                     } else {
                         Single.error(throwable)
@@ -43,3 +43,5 @@ class OAuthRepositoryImpl @Inject constructor(
     }
 
 }
+
+private const val UNAUTHORIZED_STATUS_CODE = 401

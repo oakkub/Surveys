@@ -16,7 +16,7 @@ import dagger.Provides
 class SurveysFragmentModule {
 
     @Provides
-    fun provideSurveysLoadingRequest(): SurveysLoadingRequest = SurveysLoadingRequest(1, 10)
+    fun provideSurveysLoadingRequest(): SurveysLoadingRequest = SurveysLoadingRequest(DEFAULT_LOADING_REQUEST_PAGE, DEFAULT_LOADING_REQUEST_PER_PAGE)
 
     @Provides
     fun provideSurveysViewModel(
@@ -28,3 +28,6 @@ class SurveysFragmentModule {
     ): SurveysViewModel = SurveysViewModel(oAuthRepository, surveysRepository, schedulerProvider, oAuthRequest, surveysLoadingRequest)
 
 }
+
+private const val DEFAULT_LOADING_REQUEST_PAGE = 1
+private const val DEFAULT_LOADING_REQUEST_PER_PAGE = 10
