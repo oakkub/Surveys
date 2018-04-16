@@ -322,8 +322,8 @@ style:
   MaxLineLength:
     active: true
     maxLineLength: 120
-    excludePackageStatements: false
-    excludeImportStatements: false
+    excludePackageStatements: true
+    excludeImportStatements: true
   MayBeConst:
     active: false
   ModifierOrder:
@@ -378,4 +378,4 @@ style:
     active: false
   WildcardImport:
     active: true
-    excludeImports: 'java.util.*,kotlinx.android.synthetic.*'
+    excludeImports: 'java.util.*, kotlinx.android.synthetic.*, com.oakkub.survey.extensions.*'
