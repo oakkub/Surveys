@@ -24,7 +24,7 @@ buildscript {
         mockito_version = '2.16.0'
         robolectric_version = '3.8'
 
-        test_runner_version = '1.0.1'
+        test_runner_version = '1.0.2-alpha1'
         espresso_version = '3.0.1'
     }
 
