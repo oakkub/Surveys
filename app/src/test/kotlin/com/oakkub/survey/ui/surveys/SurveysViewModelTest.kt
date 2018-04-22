@@ -151,13 +151,13 @@ class SurveysViewModelTest {
         val response = List(surveysLoadingRequest.perPage) {
             SurveyResponse("$it", "", "", "")
         }
-        val responseSecondTime = List(surveysLoadingRequest.perPage) {
-            SurveyResponse("$it Second", "", "", "")
+        val responseAfterRefreshed = List(surveysLoadingRequest.perPage) {
+            SurveyResponse("$it refreshed", "", "", "")
         }
         whenever(surveysRepository.getSurveys(surveyRequest)) then {
             Single.just(response)
         } then {
-            Single.just(responseSecondTime)
+            Single.just(responseAfterRefreshed)
         }
 
         val model = SurveysUiModel(isFirstTime = true, isLoading = true)
@@ -169,7 +169,7 @@ class SurveysViewModelTest {
         surveysViewModel.refresh()
 
         verify(observer).onChanged(model.copy(isFirstTime = true, isLoading = true))
-        verify(observer).onChanged(model.copy(surveys = response.toSet(), isLoading = false))
+        verify(observer).onChanged(model.copy(surveys = responseAfterRefreshed.toSet(), isLoading = false))
     }
 
 }
