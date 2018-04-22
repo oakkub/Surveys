@@ -17,7 +17,7 @@ buildscript {
         dagger_version = '2.15'
         fresco_version = '1.8.1'
 
-        kotlin_version = '1.2.30'
+        kotlin_version = '1.2.40'
 
         // test dependencies version
         junit_version = '4.12'
