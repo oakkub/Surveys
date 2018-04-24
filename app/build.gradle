@@ -54,6 +54,9 @@ android {
     }
 
     sourceSets {
+        main {
+            java.srcDirs += 'src/main/kotlin'
+        }
         staging {
             res.srcDirs += 'src/staging/res'
         }
