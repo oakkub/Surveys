@@ -9,14 +9,13 @@ buildscript {
     dependencies {
         classpath Dependencies.android_gradle_plugin
         classpath Dependencies.kotlin_gradle_plugin
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version '1.0.0.RC6-4'
+    id "io.gitlab.arturbosch.detekt" version '1.0.0.RC8'
 }
 
 allprojects {
@@ -31,6 +30,7 @@ task clean(type: Delete) {
 }
 
 detekt {
+    version = "1.0.0.RC8"
     profile("main") {
         input = "$projectDir"
         config = "$projectDir/detekt-config.yml"

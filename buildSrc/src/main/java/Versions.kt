@@ -1,7 +1,7 @@
 object Versions {
 
-    const val kotlin = "1.2.40"
-    const val android_gradle_plugin = "3.2.0-alpha11"
+    const val kotlin = "1.2.70"
+    const val android_gradle_plugin = "3.3.0-alpha11"
 
     // android config versions
     const val compile_sdk = 27
