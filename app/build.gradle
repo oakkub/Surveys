@@ -4,13 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion Versions.compile_sdk
     defaultConfig {
         applicationId "com.oakkub.survey"
-        minSdkVersion 21
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion Versions.min_sdk
+        targetSdkVersion Versions.target_sdk
+        versionCode Versions.version_code
+        versionName Versions.version_name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -54,6 +54,9 @@ android {
     }
 
     sourceSets {
+        main {
+            java.srcDirs += 'src/main/kotlin'
+        }
         staging {
             res.srcDirs += 'src/staging/res'
         }
@@ -65,55 +68,59 @@ android {
     androidExtensions {
         experimental = true
     }
+
+    lintOptions {
+        disable "AllowBackup", "GoogleAppIndexingWarning"
+    }
 }
 
 dependencies {
     implementation(
             fileTree(dir: 'libs', include: ['*.jar']),
-            "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
+            Dependencies.kotlin,
 
-            "com.android.support:support-v4:$support_version",
-            "com.android.support:design:$support_version",
-            "com.android.support:recyclerview-v7:$support_version",
-            "com.android.support.constraint:constraint-layout:$constraint_layout",
+            Dependencies.support_v4,
+            Dependencies.support_design,
+            Dependencies.recycler_view,
+            Dependencies.constraint_layout,
 
-            "com.squareup.retrofit2:retrofit:$retrofit_version",
-            "com.squareup.retrofit2:converter-gson:$retrofit_version",
-            "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version",
+            Dependencies.retrofit,
+            Dependencies.retrofit_converter_gson,
+            Dependencies.retrofit_adapter_rxjava,
 
-            "com.squareup.okhttp3:okhttp:$okhttp_version",
-            "com.squareup.okhttp3:logging-interceptor:$okhttp_version",
+            Dependencies.okhttp,
+            Dependencies.okhttp_interceptor,
 
-            "io.reactivex.rxjava2:rxjava:$rxjava_version",
-            "io.reactivex.rxjava2:rxandroid:$rxandroid_version",
+            Dependencies.rxjava,
+            Dependencies.rxandroid,
 
-            "android.arch.lifecycle:extensions:$arch_component_version",
-            "android.arch.lifecycle:common-java8:$arch_component_version",
-            "androidx.core:core-ktx:$android_ktx_version",
+            Dependencies.arch_extensions,
+            Dependencies.arch_common,
+            Dependencies.android_ktx,
 
-            "com.facebook.fresco:fresco:$fresco_version",
-            "com.facebook.fresco:imagepipeline-okhttp3:$fresco_version",
+            Dependencies.fresco,
+            Dependencies.fresco_okhttp,
 
-            "com.google.dagger:dagger:$dagger_version",
-            "com.google.dagger:dagger-android-support:$dagger_version"
+            Dependencies.dagger,
+            Dependencies.dagger_support
     )
 
     kapt(
-            "com.google.dagger:dagger-compiler:$dagger_version",
-            "com.google.dagger:dagger-android-processor:$dagger_version"
+            Dependencies.dagger_compiler,
+            Dependencies.dagger_processor
     )
 
     testImplementation(
-            "junit:junit:$junit_version",
-            "org.mockito:mockito-core:$mockito_version",
-            "com.squareup.okhttp3:mockwebserver:$okhttp_version",
-            "org.robolectric:robolectric:$robolectric_version",
-            "android.arch.core:core-testing:$arch_component_version"
+            Dependencies.junit,
+            Dependencies.mockito,
+            Dependencies.mock_web_server,
+            Dependencies.robolectric,
+            Dependencies.arch_testing
     )
 
     androidTestImplementation(
-            "com.android.support.test:runner:$test_runner_version",
-            "com.android.support.test:rules:$test_runner_version",
-            "com.android.support.test.espresso:espresso-core:$espresso_version"
+            Dependencies.test_runner,
+            Dependencies.test_rules,
+            Dependencies.espresso
     )
 }
