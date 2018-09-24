@@ -68,6 +68,10 @@ android {
     androidExtensions {
         experimental = true
     }
+
+    lintOptions {
+        disable "AllowBackup", "GoogleAppIndexingWarning"
+    }
 }
 
 dependencies {
