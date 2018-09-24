@@ -25,8 +25,8 @@ jobs:
           name: Build Application
           command: ./gradlew clean assembleDebug
       - run:
-	  name: Run Tests
-	  command: ./gradlew lint test
+          name: Run Tests
+          command: ./gradlew lint test
       - store_artifacts:
           name: Upload Artifacts Reports
           path: app/build/reports
