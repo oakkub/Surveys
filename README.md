@@ -1,4 +1,4 @@
-[![Build Status](https://www.bitrise.io/app/07aa976a7a971866/status.svg?token=NybXUm785BnS3iwWwZzEYg&branch=master)](https://www.bitrise.io/app/07aa976a7a971866)
+[![CircleCI](https://circleci.com/gh/oakkub/survey.svg?style=svg)](https://circleci.com/gh/oakkub/survey)
 
 # Surveys
 Nimbl3's test android application
