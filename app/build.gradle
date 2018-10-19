@@ -45,8 +45,7 @@ android {
         }
 
         production {
-            applicationIdSuffix ".production"
-            versionNameSuffix "-production"
+
         }
     }
 
